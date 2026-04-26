@@ -44,4 +44,49 @@ class AuthController extends Controller
             'token'   => $token,
         ], 201);
     }
+
+    /**
+     * YAATAL JOKKO — Connexion d'un utilisateur existant
+     * POST /api/login
+     */
+    public function login(Request $request)
+    {
+        // ✅ Étape 1 : Validation des champs envoyés
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string',
+        ], [
+            'email.required'    => 'Yaatal Jokko : l\'email est obligatoire.',
+            'email.email'       => 'Yaatal Jokko : l\'email n\'est pas valide.',
+            'password.required' => 'Yaatal Jokko : le mot de passe est obligatoire.',
+        ]);
+
+        // ✅ Étape 2 : Vérifier si l'email existe en base de données
+        $user = User::where('email', $request->email)->first();
+
+        // ✅ Étape 3 : Vérifier le mot de passe + gérer l'erreur mauvais identifiants
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'app'     => 'Yaatal Jokko',
+                'message' => 'Yaatal Jokko : identifiants incorrects. Vérifiez votre email et mot de passe.',
+                'errors'  => [
+                    'email' => ['Les identifiants fournis sont incorrects.'],
+                ],
+            ], 401);
+        }
+
+        // ✅ Étape 4 : Révoquer les anciens tokens (optionnel mais recommandé)
+        $user->tokens()->delete();
+
+        // ✅ Étape 5 : Créer un nouveau token Sanctum
+        $token = $user->createToken('yaatal-jokko-token')->plainTextToken;
+
+        // ✅ Étape 6 : Retourner la réponse JSON avec token
+        return response()->json([
+            'app'     => 'Yaatal Jokko',
+            'message' => 'Connexion réussie ! Bienvenue sur Yaatal Jokko.',
+            'user'    => $user,
+            'token'   => $token,
+        ], 200);
+    }
 }
