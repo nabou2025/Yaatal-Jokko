@@ -1,50 +1,35 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Routing\RouteFileRegistrar;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NiveauController;
 
 /*
 |--------------------------------------------------------------------------
 | YAATAL JOKKO — Routes API
 |--------------------------------------------------------------------------
-|
-| Toutes les routes publiques (sans authentification) sont définies ici.
-| Les routes protégées utilisent le middleware 'auth:sanctum'.
-|
 */
 
 // ✅ Routes publiques — Authentification
 Route::prefix('auth')->group(function () {
-
-    // POST /api/auth/register — Inscription d'un nouvel apprenant
     Route::post('/register', [AuthController::class, 'register']);
-
-    // POST /api/auth/login — Connexion d'un utilisateur existant
-    Route::post('/login', [AuthController::class, 'login']);
-
+    Route::post('/login',    [AuthController::class, 'login']);
 });
+
+// ✅ Routes publiques — Niveaux (lecture seule)
+Route::get('/niveaux', [NiveauController::class, 'index']);
 
 // ✅ Routes protégées — nécessitent un token Sanctum valide
 Route::middleware('auth:sanctum')->group(function () {
 
-    // GET /api/user — Récupérer les infos de l'utilisateur connecté
-    Route::get('/user', function (Request $request) {
-        return response()->json([
-            'app'  => 'Yaatal Jokko',
-            'user' => $request->user(),
-        ]);
-    });
+    // Profil
+    Route::get('/user',          [AuthController::class, 'profile']);
+    Route::put('/auth/profile',  [AuthController::class, 'updateProfile']);
+    Route::post('/auth/logout',  [AuthController::class, 'logout']);
 
-    // POST /api/auth/logout — Déconnexion (révocation du token)
-    Route::post('/auth/logout', function (Request $request) {
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json([
-            'app'     => 'Yaatal Jokko',
-            'message' => 'Déconnexion réussie.',
-        ]);
-    });
+    // Niveaux — admin uniquement
+    Route::post('/niveaux',           [NiveauController::class, 'store']);
+    Route::put('/niveaux/{niveau}',   [NiveauController::class, 'update']);
+    Route::delete('/niveaux/{niveau}',[NiveauController::class, 'destroy']);
 
 });
