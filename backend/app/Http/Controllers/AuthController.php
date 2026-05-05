@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     /**
      * YAATAL JOKKO — Inscription d'un nouvel apprenant
-     * POST /api/register
+     * POST /api/auth/register
      */
     public function register(Request $request)
     {
@@ -46,12 +46,11 @@ class AuthController extends Controller
     }
 
     /**
-     * YAATAL JOKKO — Connexion d'un utilisateur existant
-     * POST /api/login
+     * YAATAL JOKKO — Connexion
+     * POST /api/auth/login
      */
     public function login(Request $request)
     {
-        // ✅ Étape 1 : Validation des champs envoyés
         $request->validate([
             'email'    => 'required|email',
             'password' => 'required|string',
@@ -61,32 +60,71 @@ class AuthController extends Controller
             'password.required' => 'Yaatal Jokko : le mot de passe est obligatoire.',
         ]);
 
-        // ✅ Étape 2 : Vérifier si l'email existe en base de données
         $user = User::where('email', $request->email)->first();
 
-        // ✅ Étape 3 : Vérifier le mot de passe + gérer l'erreur mauvais identifiants
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'app'     => 'Yaatal Jokko',
-                'message' => 'Yaatal Jokko : identifiants incorrects. Vérifiez votre email et mot de passe.',
-                'errors'  => [
-                    'email' => ['Les identifiants fournis sont incorrects.'],
-                ],
-            ], 401);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['Yaatal Jokko : identifiants incorrects.'],
+            ]);
         }
 
-        // ✅ Étape 4 : Révoquer les anciens tokens (optionnel mais recommandé)
         $user->tokens()->delete();
 
-        // ✅ Étape 5 : Créer un nouveau token Sanctum
         $token = $user->createToken('yaatal-jokko-token')->plainTextToken;
 
-        // ✅ Étape 6 : Retourner la réponse JSON avec token
         return response()->json([
             'app'     => 'Yaatal Jokko',
             'message' => 'Connexion réussie ! Bienvenue sur Yaatal Jokko.',
             'user'    => $user,
             'token'   => $token,
         ], 200);
+    }
+
+    /**
+     * YAATAL JOKKO — Déconnexion
+     * POST /api/auth/logout
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'app'     => 'Yaatal Jokko',
+            'message' => 'Déconnexion réussie. À bientôt sur Yaatal Jokko !',
+        ]);
+    }
+
+    /**
+     * YAATAL JOKKO — Afficher le profil
+     * GET /api/user
+     */
+    public function profile(Request $request)
+    {
+        return response()->json([
+            'app'  => 'Yaatal Jokko',
+            'user' => $request->user(),
+        ]);
+    }
+
+    /**
+     * YAATAL JOKKO — Modifier le profil
+     * PUT /api/auth/profile
+     */
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name'  => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,' . $request->user()->id,
+        ], [
+            'email.unique' => 'Yaatal Jokko : cet email est déjà utilisé.',
+        ]);
+
+        $request->user()->update($request->only('name', 'email'));
+
+        return response()->json([
+            'app'     => 'Yaatal Jokko',
+            'message' => 'Profil mis à jour avec succès.',
+            'user'    => $request->user(),
+        ]);
     }
 }
