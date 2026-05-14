@@ -18,9 +18,9 @@ Route::prefix('auth')->group(function () {
 });
 
 // ✅ Routes publiques — Lecture seule
-Route::get('/niveaux',                    [NiveauController::class, 'index']);
-Route::get('/themes',                     [ThemeController::class, 'index']);
-Route::get('/themes/niveau/{niveau_id}',  [ThemeController::class, 'byNiveau']);
+Route::get('/niveaux',                   [NiveauController::class, 'index']);
+Route::get('/themes',                    [ThemeController::class, 'index']);
+Route::get('/themes/niveau/{niveau_id}', [ThemeController::class, 'byNiveau']);
 
 // ✅ Routes protégées — nécessitent un token Sanctum valide
 Route::middleware('auth:sanctum')->group(function () {
