@@ -38,7 +38,6 @@ export default function RegisterPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slideVisible, setSlideVisible] = useState(true);
 
-  // Slideshow auto
   useEffect(() => {
     const interval = setInterval(() => {
       setSlideVisible(false);
@@ -152,14 +151,8 @@ export default function RegisterPage() {
         .slide-img {
           transition: opacity 0.6s ease, transform 0.6s ease;
         }
-        .slide-img.visible {
-          opacity: 1;
-          transform: scale(1);
-        }
-        .slide-img.hidden {
-          opacity: 0;
-          transform: scale(1.04);
-        }
+        .slide-img.visible { opacity: 1; transform: scale(1); }
+        .slide-img.hidden { opacity: 0; transform: scale(1.04); }
 
         .dot {
           width: 8px; height: 8px;
@@ -169,11 +162,7 @@ export default function RegisterPage() {
           cursor: pointer;
           border: none;
         }
-        .dot.active {
-          background: white;
-          width: 24px;
-          border-radius: 4px;
-        }
+        .dot.active { background: white; width: 24px; border-radius: 4px; }
 
         .spin { animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -192,11 +181,8 @@ export default function RegisterPage() {
         }
       `}</style>
 
-      {/* GAUCHE — Slideshow images */}
-      <div className="left-panel" style={{
-        width: '50%', position: 'relative', overflow: 'hidden', minHeight: '100vh'
-      }}>
-        {/* Image courante */}
+      {/* GAUCHE — Slideshow */}
+      <div className="left-panel" style={{ width: '50%', position: 'relative', overflow: 'hidden', minHeight: '100vh' }}>
         <div className={`slide-img ${slideVisible ? 'visible' : 'hidden'}`} style={{ position: 'absolute', inset: 0 }}>
           <Image
             src={SLIDES[currentSlide].src}
@@ -206,52 +192,17 @@ export default function RegisterPage() {
             priority
           />
         </div>
-
-        {/* Overlay dégradé */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(45,53,97,0.2) 0%, rgba(45,53,97,0.6) 100%)',
-          zIndex: 2
-        }} />
-
-        {/* Contenu sur l'image */}
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 3,
-          display: 'flex', flexDirection: 'column',
-          justifyContent: 'space-between', padding: '36px'
-        }}>
-          {/* Logo */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(45,53,97,0.2) 0%, rgba(45,53,97,0.6) 100%)', zIndex: 2 }} />
+        <div style={{ position: 'absolute', inset: 0, zIndex: 3, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '36px' }}>
           <div>
-            <h2 style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: 28, color: 'white', fontStyle: 'italic',
-              margin: 0, textShadow: '0 2px 10px rgba(0,0,0,0.3)'
-            }}>
-              Yaatal Jokko
-            </h2>
-            <p style={{
-              fontFamily: "'Dancing Script', cursive",
-              color: '#F9E8E4', fontSize: 16, margin: '4px 0 0', opacity: 0.9
-            }}>
-              When hands speak
-            </p>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: 'white', fontStyle: 'italic', margin: 0 }}>Yaatal Jokko</h2>
+            <p style={{ fontFamily: "'Dancing Script', cursive", color: '#F9E8E4', fontSize: 16, margin: '4px 0 0', opacity: 0.9 }}>When hands speak</p>
           </div>
-
-          {/* Caption + dots */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <p style={{
-              color: 'white', fontSize: 20, fontWeight: 700,
-              textShadow: '0 2px 8px rgba(0,0,0,0.3)', margin: 0
-            }}>
-              {SLIDES[currentSlide].caption}
-            </p>
+            <p style={{ color: 'white', fontSize: 20, fontWeight: 700, margin: 0 }}>{SLIDES[currentSlide].caption}</p>
             <div style={{ display: 'flex', gap: 8 }}>
               {SLIDES.map((_, i) => (
-                <button
-                  key={i}
-                  className={`dot ${i === currentSlide ? 'active' : ''}`}
-                  onClick={() => setCurrentSlide(i)}
-                />
+                <button key={i} className={`dot ${i === currentSlide ? 'active' : ''}`} onClick={() => setCurrentSlide(i)} />
               ))}
             </div>
           </div>
@@ -259,109 +210,51 @@ export default function RegisterPage() {
       </div>
 
       {/* DROITE — Formulaire */}
-      <div className="right-panel" style={{
-        width: '50%', display: 'flex', alignItems: 'center',
-        justifyContent: 'center', padding: '32px 24px', overflowY: 'auto'
-      }}>
+      <div className="right-panel" style={{ width: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', overflowY: 'auto' }}>
         <div style={{ width: '100%', maxWidth: 420 }}>
-
-          {/* Header formulaire */}
           <div style={{ marginBottom: 28, textAlign: 'center' }}>
             <div style={{ fontSize: 40, marginBottom: 10 }}>🤟</div>
-            <h1 style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: 28, color: '#2D3561',
-              fontStyle: 'italic', margin: 0
-            }}>
-              Créer un compte
-            </h1>
-            <p style={{ color: 'rgba(45,53,97,0.55)', fontSize: 14, marginTop: 6, fontWeight: 600 }}>
-              Rejoignez notre communauté d&apos;apprenants
-            </p>
+            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: '#2D3561', fontStyle: 'italic', margin: 0 }}>Créer un compte</h1>
+            <p style={{ color: 'rgba(45,53,97,0.55)', fontSize: 14, marginTop: 6, fontWeight: 600 }}>Rejoignez notre communauté d&apos;apprenants</p>
           </div>
 
-          {/* Erreur générale */}
           {errors.general && (
-            <div style={{
-              background: '#fff0f0', border: '1.5px solid #ffcccc',
-              color: '#cc3333', borderRadius: 12, padding: '12px 16px',
-              fontSize: 13, marginBottom: 20, fontWeight: 600
-            }}>
+            <div style={{ background: '#fff0f0', border: '1.5px solid #ffcccc', color: '#cc3333', borderRadius: 12, padding: '12px 16px', fontSize: 13, marginBottom: 20, fontWeight: 600 }}>
               ⚠️ {errors.general}
             </div>
           )}
 
           <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-
-            {/* Nom */}
             <div>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>
-                Nom complet
-              </label>
-              <input
-                name="name" type="text" autoComplete="name"
-                value={form.name} onChange={handleChange}
-                placeholder="Ex : Seynabou Diallo"
-                className={`field-input ${errors.name ? 'has-error' : ''}`}
-              />
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>Nom complet</label>
+              <input name="name" type="text" autoComplete="name" value={form.name} onChange={handleChange} placeholder="Ex : Seynabou Diallo" className={`field-input ${errors.name ? 'has-error' : ''}`} />
               {errors.name && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600 }}>⚠ {errors.name}</p>}
             </div>
 
-            {/* Email */}
             <div>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>
-                Adresse email
-              </label>
-              <input
-                name="email" type="email" autoComplete="email"
-                value={form.email} onChange={handleChange}
-                placeholder="votre@email.com"
-                className={`field-input ${errors.email ? 'has-error' : ''}`}
-              />
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>Adresse email</label>
+              <input name="email" type="email" autoComplete="email" value={form.email} onChange={handleChange} placeholder="votre@email.com" className={`field-input ${errors.email ? 'has-error' : ''}`} />
               {errors.email && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600 }}>⚠ {errors.email}</p>}
             </div>
 
-            {/* Password */}
             <div>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>
-                Mot de passe
-              </label>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>Mot de passe</label>
               <div style={{ position: 'relative' }}>
-                <input
-                  name="password" type={showPass ? 'text' : 'password'} autoComplete="new-password"
-                  value={form.password} onChange={handleChange}
-                  placeholder="Minimum 8 caractères"
-                  className={`field-input ${errors.password ? 'has-error' : ''}`}
-                  style={{ paddingRight: 42 }}
-                />
-                <button type="button" className="pass-eye" onClick={() => setShowPass(!showPass)}>
-                  {showPass ? '🙈' : '👁️'}
-                </button>
+                <input name="password" type={showPass ? 'text' : 'password'} autoComplete="new-password" value={form.password} onChange={handleChange} placeholder="Minimum 8 caractères" className={`field-input ${errors.password ? 'has-error' : ''}`} style={{ paddingRight: 42 }} />
+                <button type="button" className="pass-eye" onClick={() => setShowPass(!showPass)}>{showPass ? '🙈' : '👁️'}</button>
               </div>
               {errors.password && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600 }}>⚠ {errors.password}</p>}
             </div>
 
-            {/* Confirm password */}
             <div>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>
-                Confirmer le mot de passe
-              </label>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>Confirmer le mot de passe</label>
               <div style={{ position: 'relative' }}>
-                <input
-                  name="password_confirmation" type={showConfirm ? 'text' : 'password'} autoComplete="new-password"
-                  value={form.password_confirmation} onChange={handleChange}
-                  placeholder="Répéter votre mot de passe"
-                  className={`field-input ${errors.password_confirmation ? 'has-error' : ''}`}
-                  style={{ paddingRight: 42 }}
-                />
-                <button type="button" className="pass-eye" onClick={() => setShowConfirm(!showConfirm)}>
-                  {showConfirm ? '🙈' : '👁️'}
-                </button>
+                <input name="password_confirmation" type={showConfirm ? 'text' : 'password'} autoComplete="new-password" value={form.password_confirmation} onChange={handleChange} placeholder="Répéter votre mot de passe" className={`field-input ${errors.password_confirmation ? 'has-error' : ''}`} style={{ paddingRight: 42 }} />
+                <button type="button" className="pass-eye" onClick={() => setShowConfirm(!showConfirm)}>{showConfirm ? '🙈' : '👁️'}</button>
               </div>
               {errors.password_confirmation && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600 }}>⚠ {errors.password_confirmation}</p>}
             </div>
 
-            {/* Submit */}
             <button type="submit" className="btn-submit" disabled={loading} style={{ marginTop: 8 }}>
               {loading ? (
                 <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
@@ -375,23 +268,15 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          {/* Lien connexion */}
           <p style={{ textAlign: 'center', marginTop: 20, fontSize: 14, color: 'rgba(45,53,97,0.55)', fontWeight: 600 }}>
             Déjà un compte ?{' '}
-            <Link href="/login" style={{ color: '#E8A898', fontWeight: 800, textDecoration: 'none' }}>
-              Se connecter
-            </Link>
+            <Link href="/login" style={{ color: '#E8A898', fontWeight: 800, textDecoration: 'none' }}>Se connecter</Link>
           </p>
-
-          {/* Retour accueil */}
           <p style={{ textAlign: 'center', marginTop: 8 }}>
-            <Link href="/" style={{ color: 'rgba(45,53,97,0.4)', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>
-              ← Retour à l&apos;accueil
-            </Link>
+            <Link href="/" style={{ color: 'rgba(45,53,97,0.4)', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>← Retour à l&apos;accueil</Link>
           </p>
         </div>
       </div>
     </main>
   );
 }
-
