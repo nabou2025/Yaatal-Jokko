@@ -13,14 +13,11 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     ...(options.headers as Record<string, string> || {}),
   };
   if (token) headers['Authorization'] = `Bearer ${token}`;
-
   const res = await fetch(`${BASE_URL}${path}`, { ...options, headers });
-
   if (res.status === 401) {
     localStorage.removeItem('yaatal_token');
     window.location.href = '/login';
   }
-
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Erreur serveur');
   return data as T;
@@ -33,24 +30,18 @@ export const api = {
   delete: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
 };
 
-// Auth helpers
 export const auth = {
   login: (email: string, password: string) =>
     api.post<{ token: string; user: User }>('/auth/login', { email, password }),
-
   register: (name: string, email: string, password: string, password_confirmation: string, role: string) =>
     api.post<{ token: string; user: User }>('/auth/register', { name, email, password, password_confirmation, role }),
-
   logout: () => api.post('/auth/logout', {}),
-
   me: () => api.get<{ user: User }>('/user'),
-
   saveToken: (token: string) => localStorage.setItem('yaatal_token', token),
   clearToken: () => localStorage.removeItem('yaatal_token'),
   isLoggedIn: () => !!getToken(),
 };
 
-// Types
 export interface User {
   id: number;
   name: string;

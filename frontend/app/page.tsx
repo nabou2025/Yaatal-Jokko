@@ -1,161 +1,181 @@
 'use client';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { auth } from '../lib/api';
+import Image from 'next/image';
 
-export default function HomePage() {
-  const [logged, setLogged] = useState(false);
-  useEffect(() => { setLogged(auth.isLoggedIn()); }, []);
+export default function SplashPage() {
+  const router = useRouter();
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setVisible(true), 100);
+  }, []);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--white)' }}>
-      {/* NAVBAR */}
-      <nav className="navbar">
-        <div className="nav-logo">Yaatal <span>Jokko</span></div>
-        <div className="nav-links">
-          <Link href="/signs" className="nav-link">Signes</Link>
-          <Link href="/lessons" className="nav-link">Leçons</Link>
-          {logged ? (
-            <Link href="/dashboard" className="btn btn-primary" style={{ padding: '8px 18px', fontSize: 14 }}>Mon espace</Link>
-          ) : (
-            <>
-              <Link href="/login" className="nav-link">Connexion</Link>
-              <Link href="/register" className="btn btn-primary" style={{ padding: '8px 18px', fontSize: 14 }}>S'inscrire</Link>
-            </>
-          )}
-        </div>
-      </nav>
+    <main style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden', fontFamily: "'Nunito', sans-serif" }}>
 
-      {/* HERO */}
-      <section style={{
-        minHeight: '90vh', display: 'flex', alignItems: 'center',
-        background: 'var(--charcoal)', position: 'relative', overflow: 'hidden',
-        padding: '80px 24px',
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Nunito:wght@400;600;700;800&family=Dancing+Script:wght@700&display=swap');
+
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.9s ease, transform 0.9s ease; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .d1 { transition-delay: 0.2s; }
+        .d2 { transition-delay: 0.4s; }
+        .d3 { transition-delay: 0.6s; }
+        .d4 { transition-delay: 0.8s; }
+        .d5 { transition-delay: 1s; }
+
+        .btn-main {
+          background: #2D3561;
+          color: white;
+          border: none;
+          padding: 18px 56px;
+          border-radius: 50px;
+          font-size: 18px;
+          font-weight: 800;
+          font-family: 'Nunito', sans-serif;
+          cursor: pointer;
+          box-shadow: 0 8px 32px rgba(45,53,97,0.4);
+          transition: all 0.3s ease;
+          letter-spacing: 0.5px;
+        }
+        .btn-main:hover {
+          transform: translateY(-4px) scale(1.04);
+          box-shadow: 0 16px 48px rgba(45,53,97,0.5);
+          background: #E8A898;
+        }
+
+        .btn-secondary {
+          background: rgba(255,255,255,0.2);
+          color: white;
+          border: 2px solid rgba(255,255,255,0.5);
+          padding: 14px 40px;
+          border-radius: 50px;
+          font-size: 15px;
+          font-weight: 700;
+          font-family: 'Nunito', sans-serif;
+          cursor: pointer;
+          backdrop-filter: blur(8px);
+          transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+          background: rgba(255,255,255,0.35);
+          transform: translateY(-2px);
+        }
+
+        .feature-pill {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255,255,255,0.15);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255,255,255,0.3);
+          border-radius: 50px;
+          padding: 10px 20px;
+          color: white;
+          font-size: 14px;
+          font-weight: 700;
+        }
+      `}</style>
+
+      {/* Image de fond couvre toute la page */}
+      <Image
+        src="/images/splash-bg.jpg"
+        alt="Yaatal Jokko"
+        fill
+        style={{ objectFit: 'cover', objectPosition: 'center' }}
+        priority
+      />
+
+      {/* Overlay dégradé pour lisibilité */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(135deg, rgba(45,53,97,0.75) 0%, rgba(45,53,97,0.5) 50%, rgba(232,168,152,0.3) 100%)'
+      }} />
+
+      {/* Contenu centré */}
+      <div style={{
+        position: 'relative', zIndex: 10,
+        minHeight: '100vh',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'space-between',
+        padding: '40px 24px'
       }}>
-        {/* Decorative blobs */}
-        <div style={{
-          position: 'absolute', width: 600, height: 600,
-          borderRadius: '50%', background: 'radial-gradient(circle, rgba(200,120,42,0.18) 0%, transparent 70%)',
-          top: '-100px', right: '-100px',
-        }} />
-        <div style={{
-          position: 'absolute', width: 400, height: 400,
-          borderRadius: '50%', background: 'radial-gradient(circle, rgba(45,80,22,0.2) 0%, transparent 70%)',
-          bottom: '-80px', left: '-80px',
-        }} />
 
-        {/* Pattern grid */}
-        <div style={{
-          position: 'absolute', inset: 0, opacity: 0.03,
-          backgroundImage: 'repeating-linear-gradient(0deg, var(--white) 0px, var(--white) 1px, transparent 1px, transparent 48px), repeating-linear-gradient(90deg, var(--white) 0px, var(--white) 1px, transparent 1px, transparent 48px)',
-        }} />
-
-        <div className="container" style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }}>
-          <div>
-            <div className="badge badge-ocre animate-up" style={{ marginBottom: 24 }}>
-              🌍 Plateforme éducative sénégalaise
-            </div>
-            <h1 className="animate-up delay-1" style={{ fontSize: 'clamp(40px, 6vw, 70px)', color: 'var(--white)', lineHeight: 1.1, marginBottom: 24 }}>
-              Apprends la<br /><span style={{ color: 'var(--ocre-light)' }}>langue</span><br />des signes
-            </h1>
-            <p className="animate-up delay-2" style={{ fontSize: 18, color: 'rgba(255,255,255,0.65)', marginBottom: 40, maxWidth: 480, lineHeight: 1.7 }}>
-              Yaatal Jokko — «&nbsp;Développer le dialogue&nbsp;» — une plateforme interactive pour apprendre la langue des signes à travers des leçons, vidéos et exercices adaptés.
-            </p>
-            <div className="animate-up delay-3" style={{ display: 'flex', gap: 16 }}>
-              <Link href="/register" className="btn btn-primary" style={{ fontSize: 16, padding: '14px 28px' }}>
-                Commencer gratuitement →
-              </Link>
-              <Link href="/lessons" className="btn" style={{ fontSize: 16, padding: '14px 28px', background: 'rgba(255,255,255,0.08)', color: 'var(--white)', border: '1px solid rgba(255,255,255,0.15)' }}>
-                Voir les leçons
-              </Link>
-            </div>
-          </div>
-
-          {/* Visual card */}
-          <div className="animate-up delay-4" style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{
-              background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(200,120,42,0.3)',
-              borderRadius: 24, padding: 32, width: '100%', maxWidth: 380,
-            }}>
-              {[
-                { emoji: '🤟', label: 'Alphabet LSS', sub: '26 signes • Débutant', color: 'var(--ocre)' },
-                { emoji: '📚', label: 'Vocabulaire quotidien', sub: '120+ mots • Intermédiaire', color: 'var(--forest-light)' },
-                { emoji: '💬', label: 'Phrases complètes', sub: '40 phrases • Avancé', color: 'var(--terra-light)' },
-              ].map((item, i) => (
-                <div key={i} style={{
-                  display: 'flex', alignItems: 'center', gap: 16,
-                  padding: '16px 0', borderBottom: i < 2 ? '1px solid rgba(255,255,255,0.07)' : 'none',
-                }}>
-                  <div style={{
-                    width: 48, height: 48, borderRadius: 12,
-                    background: 'rgba(255,255,255,0.08)', display: 'flex',
-                    alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0,
-                  }}>{item.emoji}</div>
-                  <div>
-                    <div style={{ color: 'var(--white)', fontWeight: 600, marginBottom: 2 }}>{item.label}</div>
-                    <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13 }}>{item.sub}</div>
-                  </div>
-                  <div style={{ marginLeft: 'auto', width: 8, height: 8, borderRadius: '50%', background: item.color }} />
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* Logo top */}
+        <div className={`fade-up d1 ${visible ? 'visible' : ''}`}>
+          <span style={{
+            fontFamily: "'Nunito', sans-serif",
+            fontSize: 14, color: 'rgba(255,255,255,0.8)',
+            letterSpacing: 5, textTransform: 'uppercase', fontWeight: 700
+          }}>
+            🤟 Langue des Signes
+          </span>
         </div>
-      </section>
 
-      {/* FEATURES */}
-      <section style={{ padding: '80px 24px', background: 'var(--surface)' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div className="badge badge-forest" style={{ marginBottom: 16 }}>Pourquoi Yaatal Jokko ?</div>
-            <h2 className="section-title">Une approche <span>complète</span><br />de l'apprentissage</h2>
+        {/* Titre principal */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, textAlign: 'center' }}>
+          <div className={`fade-up d2 ${visible ? 'visible' : ''}`}>
+            <h1 style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: 'clamp(52px, 12vw, 88px)',
+              color: 'white',
+              lineHeight: 1,
+              fontWeight: 700,
+              letterSpacing: '-2px',
+              textShadow: '0 4px 20px rgba(0,0,0,0.3)',
+              margin: 0
+            }}>
+              YAATAL<br />JOKKO
+            </h1>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
+
+          <div className={`fade-up d3 ${visible ? 'visible' : ''}`}>
+            <p style={{
+              fontFamily: "'Dancing Script', cursive",
+              fontSize: 28, color: '#F9E8E4',
+              margin: 0, textShadow: '0 2px 10px rgba(0,0,0,0.2)'
+            }}>
+              When hands speak
+            </p>
+          </div>
+
+          <div className={`fade-up d3 ${visible ? 'visible' : ''}`}>
+            <p style={{
+              color: 'rgba(255,255,255,0.8)', fontSize: 16,
+              maxWidth: 380, lineHeight: 1.7, fontWeight: 600, margin: 0
+            }}>
+              Apprenez la langue des signes de façon interactive,
+              à votre rythme, avec des leçons adaptées à tous.
+            </p>
+          </div>
+
+          {/* Features */}
+          <div className={`fade-up d4 ${visible ? 'visible' : ''}`} style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 8 }}>
             {[
-              { icon: '🎥', title: 'Vidéos immersives', desc: 'Chaque signe est accompagné d\'une vidéo claire pour apprendre les gestes avec précision.' },
-              { icon: '🧩', title: 'Exercices interactifs', desc: 'Testez vos connaissances avec des exercices adaptés à votre niveau de progression.' },
-              { icon: '📈', title: 'Suivi des progrès', desc: 'Visualisez votre avancement leçon par leçon et restez motivé tout au long de votre parcours.' },
-              { icon: '👨‍👩‍👧', title: 'Adapté à tous', desc: 'Pour les apprenants, parents et enseignants — chaque rôle a son espace personnalisé.' },
-            ].map((f, i) => (
-              <div key={i} className="card" style={{ padding: 28 }}>
-                <div style={{
-                  width: 52, height: 52, borderRadius: 14,
-                  background: 'var(--ocre-pale)', display: 'flex',
-                  alignItems: 'center', justifyContent: 'center',
-                  fontSize: 26, marginBottom: 20,
-                }}>{f.icon}</div>
-                <h3 style={{ fontSize: 18, marginBottom: 10 }}>{f.title}</h3>
-                <p style={{ fontSize: 14, color: 'var(--gray)', lineHeight: 1.6 }}>{f.desc}</p>
+              { icon: '📚', label: 'Leçons structurées' },
+              { icon: '✏️', label: 'Exercices interactifs' },
+              { icon: '📈', label: 'Suivi progression' },
+            ].map(f => (
+              <div key={f.label} className="feature-pill">
+                <span style={{ fontSize: 18 }}>{f.icon}</span>
+                {f.label}
               </div>
             ))}
           </div>
         </div>
-      </section>
 
-      {/* CTA BANNER */}
-      <section style={{
-        padding: '80px 24px',
-        background: 'linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%)',
-      }}>
-        <div className="container" style={{ textAlign: 'center' }}>
-          <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', color: 'var(--white)', marginBottom: 20 }}>
-            Prêt·e à commencer ?
-          </h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 18, marginBottom: 36 }}>
-            Rejoins des centaines d'apprenants sur Yaatal Jokko.
-          </p>
-          <Link href="/register" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 36px' }}>
-            Créer mon compte →
-          </Link>
+        {/* Boutons bas */}
+        <div className={`fade-up d5 ${visible ? 'visible' : ''}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
+          <button className="btn-main" onClick={() => router.push('/register')}>
+            Commencer l&apos;aventure →
+          </button>
+          <button className="btn-secondary" onClick={() => router.push('/login')}>
+            J&apos;ai déjà un compte — Se connecter
+          </button>
         </div>
-      </section>
 
-      {/* FOOTER */}
-      <footer style={{ background: 'var(--charcoal)', padding: '32px 24px', textAlign: 'center' }}>
-        <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>
-          © 2025 Yaatal Jokko — Tous droits réservés
-        </div>
-      </footer>
-    </div>
+      </div>
+    </main>
   );
 }
