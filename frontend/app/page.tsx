@@ -1,292 +1,181 @@
+'use client';
 
-"use client";
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-
-interface FormState {
-  name: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-}
-
-interface FormErrors {
-  name?: string;
-  email?: string;
-  password?: string;
-  password_confirmation?: string;
-}
-
-export default function RegisterPage() {
+export default function SplashPage() {
   const router = useRouter();
+  const [visible, setVisible] = useState(false);
 
-  const [form, setForm] = useState<FormState>({
-    name: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-  });
-
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [apiError, setApiError] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const validate = (): FormErrors => {
-    const newErrors: FormErrors = {};
-    if (!form.name.trim()) newErrors.name = "Le nom est requis.";
-    if (!form.email.trim()) {
-      newErrors.email = "L'email est requis.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = "Format d'email invalide.";
-    }
-    if (!form.password) {
-      newErrors.password = "Le mot de passe est requis.";
-    } else if (form.password.length < 8) {
-      newErrors.password = "Le mot de passe doit contenir au moins 8 caractères.";
-    }
-    if (!form.password_confirmation) {
-      newErrors.password_confirmation = "La confirmation est requise.";
-    } else if (form.password !== form.password_confirmation) {
-      newErrors.password_confirmation = "Les mots de passe ne correspondent pas.";
-    }
-    return newErrors;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-    setApiError("");
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-    setLoading(true);
-    setApiError("");
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        if (data.errors) setErrors(data.errors);
-        else setApiError(data.message || "Une erreur est survenue.");
-        return;
-      }
-      router.push("/dashboard");
-    } catch {
-      setApiError("Impossible de contacter le serveur. Vérifiez votre connexion.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    setTimeout(() => setVisible(true), 100);
+  }, []);
 
   return (
-    <main
-      className="min-h-screen flex items-center justify-center px-4 py-10"
-      style={{ backgroundColor: "#f5f4f0" }}
-    >
-      <div className="w-full max-w-md">
-        <div
-          className="rounded-2xl border px-9 py-10"
-          style={{
-            background: "#ffffff",
-            borderColor: "#e5e3de",
-            boxShadow: "0 2px 24px rgba(0,0,0,0.07)",
-          }}
-        >
-          {/* Logo */}
-          <div className="mb-7 flex flex-col items-center">
-            <div className="flex items-end gap-1 mb-2">
-              {[20, 28, 16, 32, 22].map((h, i) => (
-                <div
-                  key={i}
-                  style={{
-                    width: 6,
-                    height: h,
-                    background: "#e8956d",
-                    borderRadius: 3,
-                  }}
-                />
-              ))}
-            </div>
-            <h1
-              className="text-xl font-black tracking-widest"
-              style={{ color: "#2d2d2d" }}
-            >
-              YAATAL JOKKO
-            </h1>
-            <p className="text-xs italic mt-0.5" style={{ color: "#999" }}>
-              Where hands speak
-            </p>
-          </div>
+    <main style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden', fontFamily: "'Nunito', sans-serif" }}>
 
-          {/* Séparateur */}
-          <div className="mb-6" style={{ height: 1, background: "#ece9e3" }} />
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Nunito:wght@400;600;700;800&family=Dancing+Script:wght@700&display=swap');
 
-          {/* Titre formulaire */}
-          <div className="mb-5 text-center">
-            <h2 className="text-base font-bold" style={{ color: "#2d2d2d" }}>
-              Créer un compte
-            </h2>
-            <p className="text-xs mt-0.5" style={{ color: "#aaa" }}>
-              Rejoignez-nous en quelques secondes
-            </p>
-          </div>
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.9s ease, transform 0.9s ease; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .d1 { transition-delay: 0.2s; }
+        .d2 { transition-delay: 0.4s; }
+        .d3 { transition-delay: 0.6s; }
+        .d4 { transition-delay: 0.8s; }
+        .d5 { transition-delay: 1s; }
 
-          {/* Erreur API */}
-          {apiError && (
-            <div
-              className="mb-4 rounded-lg px-4 py-3 text-xs"
-              style={{
-                background: "#fff2f2",
-                border: "1px solid #fca5a5",
-                color: "#b91c1c",
-              }}
-            >
-              {apiError}
-            </div>
-          )}
+        .btn-main {
+          background: #2D3561;
+          color: white;
+          border: none;
+          padding: 18px 56px;
+          border-radius: 50px;
+          font-size: 18px;
+          font-weight: 800;
+          font-family: 'Nunito', sans-serif;
+          cursor: pointer;
+          box-shadow: 0 8px 32px rgba(45,53,97,0.4);
+          transition: all 0.3s ease;
+          letter-spacing: 0.5px;
+        }
+        .btn-main:hover {
+          transform: translateY(-4px) scale(1.04);
+          box-shadow: 0 16px 48px rgba(45,53,97,0.5);
+          background: #E8A898;
+        }
 
-          <form onSubmit={handleSubmit} noValidate className="space-y-4">
-            {/* Nom */}
-            <div>
-              <label
-                className="block text-[10px] font-bold uppercase tracking-widest mb-1.5"
-                style={{ color: "#888" }}
-              >
-                Nom complet
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Seynabou Diallo"
-                className="w-full rounded-lg border-[1.5px] px-4 py-2.5 text-sm outline-none transition"
-                style={{
-                  background: errors.name ? "#fff8f8" : "#faf9f7",
-                  borderColor: errors.name ? "#e05252" : "#e5e3de",
-                  color: "#2d2d2d",
-                }}
-              />
-              {errors.name && (
-                <p className="mt-1 text-xs" style={{ color: "#e05252" }}>
-                  {errors.name}
-                </p>
-              )}
-            </div>
+        .btn-secondary {
+          background: rgba(255,255,255,0.2);
+          color: white;
+          border: 2px solid rgba(255,255,255,0.5);
+          padding: 14px 40px;
+          border-radius: 50px;
+          font-size: 15px;
+          font-weight: 700;
+          font-family: 'Nunito', sans-serif;
+          cursor: pointer;
+          backdrop-filter: blur(8px);
+          transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+          background: rgba(255,255,255,0.35);
+          transform: translateY(-2px);
+        }
 
-            {/* Email */}
-            <div>
-              <label
-                className="block text-[10px] font-bold uppercase tracking-widest mb-1.5"
-                style={{ color: "#888" }}
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="vous@exemple.com"
-                className="w-full rounded-lg border-[1.5px] px-4 py-2.5 text-sm outline-none transition"
-                style={{
-                  background: errors.email ? "#fff8f8" : "#faf9f7",
-                  borderColor: errors.email ? "#e05252" : "#e5e3de",
-                  color: "#2d2d2d",
-                }}
-              />
-              {errors.email && (
-                <p className="mt-1 text-xs" style={{ color: "#e05252" }}>
-                  {errors.email}
-                </p>
-              )}
-            </div>
+        .feature-pill {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255,255,255,0.15);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255,255,255,0.3);
+          border-radius: 50px;
+          padding: 10px 20px;
+          color: white;
+          font-size: 14px;
+          font-weight: 700;
+        }
+      `}</style>
 
-            {/* Mot de passe */}
-            <div>
-              <label
-                className="block text-[10px] font-bold uppercase tracking-widest mb-1.5"
-                style={{ color: "#888" }}
-              >
-                Mot de passe
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                placeholder="8 caractères minimum"
-                className="w-full rounded-lg border-[1.5px] px-4 py-2.5 text-sm outline-none transition"
-                style={{
-                  background: errors.password ? "#fff8f8" : "#faf9f7",
-                  borderColor: errors.password ? "#e05252" : "#e5e3de",
-                  color: "#2d2d2d",
-                }}
-              />
-              {errors.password && (
-                <p className="mt-1 text-xs" style={{ color: "#e05252" }}>
-                  {errors.password}
-                </p>
-              )}
-            </div>
+      {/* Image de fond couvre toute la page */}
+      <Image
+        src="/images/splash-bg.jpg"
+        alt="Yaatal Jokko"
+        fill
+        style={{ objectFit: 'cover', objectPosition: 'center' }}
+        priority
+      />
 
-            {/* Confirmation */}
-            <div>
-              <label
-                className="block text-[10px] font-bold uppercase tracking-widest mb-1.5"
-                style={{ color: "#888" }}
-              >
-                Confirmer le mot de passe
-              </label>
-              <input
-                type="password"
-                name="password_confirmation"
-                value={form.password_confirmation}
-                onChange={handleChange}
-                placeholder="Répétez le mot de passe"
-                className="w-full rounded-lg border-[1.5px] px-4 py-2.5 text-sm outline-none transition"
-                style={{
-                  background: errors.password_confirmation ? "#fff8f8" : "#faf9f7",
-                  borderColor: errors.password_confirmation ? "#e05252" : "#e5e3de",
-                  color: "#2d2d2d",
-                }}
-              />
-              {errors.password_confirmation && (
-                <p className="mt-1 text-xs" style={{ color: "#e05252" }}>
-                  {errors.password_confirmation}
-                </p>
-              )}
-            </div>
+      {/* Overlay dégradé pour lisibilité */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(135deg, rgba(45,53,97,0.75) 0%, rgba(45,53,97,0.5) 50%, rgba(232,168,152,0.3) 100%)'
+      }} />
 
-            {/* Bouton */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full mt-1 rounded-lg py-3 text-sm font-bold text-white transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ background: "#e8956d" }}
-            >
-              {loading ? "Inscription en cours…" : "S'inscrire"}
-            </button>
-          </form>
+      {/* Contenu centré */}
+      <div style={{
+        position: 'relative', zIndex: 10,
+        minHeight: '100vh',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'space-between',
+        padding: '40px 24px'
+      }}>
 
-          <p className="mt-6 text-center text-xs" style={{ color: "#aaa" }}>
-            Déjà un compte ?{" "}
-            <a href="/login" style={{ color: "#e8956d", fontWeight: 600 }}>
-              Se connecter
-            </a>
-          </p>
+        {/* Logo top */}
+        <div className={`fade-up d1 ${visible ? 'visible' : ''}`}>
+          <span style={{
+            fontFamily: "'Nunito', sans-serif",
+            fontSize: 14, color: 'rgba(255,255,255,0.8)',
+            letterSpacing: 5, textTransform: 'uppercase', fontWeight: 700
+          }}>
+            🤟 Langue des Signes
+          </span>
         </div>
+
+        {/* Titre principal */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, textAlign: 'center' }}>
+          <div className={`fade-up d2 ${visible ? 'visible' : ''}`}>
+            <h1 style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: 'clamp(52px, 12vw, 88px)',
+              color: 'white',
+              lineHeight: 1,
+              fontWeight: 700,
+              letterSpacing: '-2px',
+              textShadow: '0 4px 20px rgba(0,0,0,0.3)',
+              margin: 0
+            }}>
+              YAATAL<br />JOKKO
+            </h1>
+          </div>
+
+          <div className={`fade-up d3 ${visible ? 'visible' : ''}`}>
+            <p style={{
+              fontFamily: "'Dancing Script', cursive",
+              fontSize: 28, color: '#F9E8E4',
+              margin: 0, textShadow: '0 2px 10px rgba(0,0,0,0.2)'
+            }}>
+              When hands speak
+            </p>
+          </div>
+
+          <div className={`fade-up d3 ${visible ? 'visible' : ''}`}>
+            <p style={{
+              color: 'rgba(255,255,255,0.8)', fontSize: 16,
+              maxWidth: 380, lineHeight: 1.7, fontWeight: 600, margin: 0
+            }}>
+              Apprenez la langue des signes de façon interactive,
+              à votre rythme, avec des leçons adaptées à tous.
+            </p>
+          </div>
+
+          {/* Features */}
+          <div className={`fade-up d4 ${visible ? 'visible' : ''}`} style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 8 }}>
+            {[
+              { icon: '📚', label: 'Leçons structurées' },
+              { icon: '✏️', label: 'Exercices interactifs' },
+              { icon: '📈', label: 'Suivi progression' },
+            ].map(f => (
+              <div key={f.label} className="feature-pill">
+                <span style={{ fontSize: 18 }}>{f.icon}</span>
+                {f.label}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Boutons bas */}
+        <div className={`fade-up d5 ${visible ? 'visible' : ''}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
+          <button className="btn-main" onClick={() => router.push('/register')}>
+            Commencer l&apos;aventure →
+          </button>
+          <button className="btn-secondary" onClick={() => router.push('/login')}>
+            J&apos;ai déjà un compte — Se connecter
+          </button>
+        </div>
+
       </div>
     </main>
   );
