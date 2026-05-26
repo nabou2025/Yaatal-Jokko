@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Hand, BookOpen, Pencil, TrendingUp } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -31,7 +32,7 @@ export default function HomePage() {
       {/* Hero */}
       <section className="relative z-10 flex flex-col items-center text-center px-6 pt-20 pb-24 gap-6">
         <span className="bg-white/10 text-white/80 text-xs uppercase tracking-widest px-4 py-1.5 rounded-full border border-white/20">
-          🤟 Apprendre la Langue des Signes
+          <Hand size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 6 }} /> Apprendre la Langue des Signes
         </span>
         <h1 className="font-serif text-5xl md:text-6xl font-bold leading-tight max-w-2xl">
           Parlez avec vos{' '}
@@ -61,15 +62,15 @@ export default function HomePage() {
       {/* Feature cards */}
       <section className="relative z-10 px-8 pb-24 grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto">
         {[
-          { icon: '📚', title: 'Leçons structurées', desc: 'De débutant à avancé, avec vidéos et illustrations.' },
-          { icon: '✏️', title: 'Exercices interactifs', desc: 'Pratiquez et testez vos acquis à chaque étape.' },
-          { icon: '📈', title: 'Suivi de progression', desc: 'Visualisez votre avancement en temps réel.' },
+          { Icon: BookOpen, title: 'Leçons structurées', desc: 'De débutant à avancé, avec vidéos et illustrations.' },
+          { Icon: Pencil, title: 'Exercices interactifs', desc: 'Pratiquez et testez vos acquis à chaque étape.' },
+          { Icon: TrendingUp, title: 'Suivi de progression', desc: 'Visualisez votre avancement en temps réel.' },
         ].map((f) => (
           <div
             key={f.title}
             className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-3 hover:bg-white/10 transition-colors"
           >
-            <span className="text-3xl">{f.icon}</span>
+            <f.Icon size={30} color="#1d9e75" />
             <h3 className="font-semibold text-white text-base">{f.title}</h3>
             <p className="text-white/50 text-sm leading-relaxed">{f.desc}</p>
           </div>

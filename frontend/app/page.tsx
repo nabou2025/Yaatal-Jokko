@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { Hand, BookOpen, Pencil, TrendingUp } from 'lucide-react';
 
 export default function SplashPage() {
   const router = useRouter();
@@ -109,7 +110,7 @@ export default function SplashPage() {
             fontSize: 14, color: 'rgba(255,255,255,0.8)',
             letterSpacing: 5, textTransform: 'uppercase', fontWeight: 700
           }}>
-            🤟 Langue des Signes
+            <Hand size={14} color="rgba(255,255,255,0.8)" style={{ display: 'inline', verticalAlign: 'middle', marginRight: 6 }} /> Langue des Signes
           </span>
         </div>
 
@@ -153,12 +154,12 @@ export default function SplashPage() {
           {/* Features */}
           <div className={`fade-up d4 ${visible ? 'visible' : ''}`} style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 8 }}>
             {[
-              { icon: '📚', label: 'Leçons structurées' },
-              { icon: '✏️', label: 'Exercices interactifs' },
-              { icon: '📈', label: 'Suivi progression' },
+              { Icon: BookOpen, label: 'Leçons structurées' },
+              { Icon: Pencil, label: 'Exercices interactifs' },
+              { Icon: TrendingUp, label: 'Suivi progression' },
             ].map(f => (
               <div key={f.label} className="feature-pill">
-                <span style={{ fontSize: 18 }}>{f.icon}</span>
+                <f.Icon size={18} color="white" />
                 {f.label}
               </div>
             ))}

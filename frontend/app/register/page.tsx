@@ -4,6 +4,7 @@ import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { Hand, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 
 interface FormData {
   name: string;
@@ -213,14 +214,14 @@ export default function RegisterPage() {
       <div className="right-panel" style={{ width: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', overflowY: 'auto' }}>
         <div style={{ width: '100%', maxWidth: 420 }}>
           <div style={{ marginBottom: 28, textAlign: 'center' }}>
-            <div style={{ fontSize: 40, marginBottom: 10 }}>🤟</div>
+            <div style={{ marginBottom: 10, display: 'flex', justifyContent: 'center' }}><Hand size={40} color="#2D3561" /></div>
             <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: '#2D3561', fontStyle: 'italic', margin: 0 }}>Créer un compte</h1>
             <p style={{ color: 'rgba(45,53,97,0.55)', fontSize: 14, marginTop: 6, fontWeight: 600 }}>Rejoignez notre communauté d&apos;apprenants</p>
           </div>
 
           {errors.general && (
             <div style={{ background: '#fff0f0', border: '1.5px solid #ffcccc', color: '#cc3333', borderRadius: 12, padding: '12px 16px', fontSize: 13, marginBottom: 20, fontWeight: 600 }}>
-              ⚠️ {errors.general}
+              <AlertTriangle size={14} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: 6 }} /> {errors.general}
             </div>
           )}
 
@@ -228,31 +229,31 @@ export default function RegisterPage() {
             <div>
               <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>Nom complet</label>
               <input name="name" type="text" autoComplete="name" value={form.name} onChange={handleChange} placeholder="Ex : Seynabou Diallo" className={`field-input ${errors.name ? 'has-error' : ''}`} />
-              {errors.name && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600 }}>⚠ {errors.name}</p>}
+              {errors.name && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}><AlertTriangle size={12} />{errors.name}</p>}
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>Adresse email</label>
               <input name="email" type="email" autoComplete="email" value={form.email} onChange={handleChange} placeholder="votre@email.com" className={`field-input ${errors.email ? 'has-error' : ''}`} />
-              {errors.email && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600 }}>⚠ {errors.email}</p>}
+              {errors.email && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}><AlertTriangle size={12} />{errors.email}</p>}
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>Mot de passe</label>
               <div style={{ position: 'relative' }}>
                 <input name="password" type={showPass ? 'text' : 'password'} autoComplete="new-password" value={form.password} onChange={handleChange} placeholder="Minimum 8 caractères" className={`field-input ${errors.password ? 'has-error' : ''}`} style={{ paddingRight: 42 }} />
-                <button type="button" className="pass-eye" onClick={() => setShowPass(!showPass)}>{showPass ? '🙈' : '👁️'}</button>
+                <button type="button" className="pass-eye" onClick={() => setShowPass(!showPass)}>{showPass ? <EyeOff size={16} /> : <Eye size={16} />}</button>
               </div>
-              {errors.password && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600 }}>⚠ {errors.password}</p>}
+              {errors.password && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}><AlertTriangle size={12} />{errors.password}</p>}
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#2D3561', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.8px' }}>Confirmer le mot de passe</label>
               <div style={{ position: 'relative' }}>
                 <input name="password_confirmation" type={showConfirm ? 'text' : 'password'} autoComplete="new-password" value={form.password_confirmation} onChange={handleChange} placeholder="Répéter votre mot de passe" className={`field-input ${errors.password_confirmation ? 'has-error' : ''}`} style={{ paddingRight: 42 }} />
-                <button type="button" className="pass-eye" onClick={() => setShowConfirm(!showConfirm)}>{showConfirm ? '🙈' : '👁️'}</button>
+                <button type="button" className="pass-eye" onClick={() => setShowConfirm(!showConfirm)}>{showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}</button>
               </div>
-              {errors.password_confirmation && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600 }}>⚠ {errors.password_confirmation}</p>}
+              {errors.password_confirmation && <p style={{ color: '#e85555', fontSize: 12, marginTop: 4, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}><AlertTriangle size={12} />{errors.password_confirmation}</p>}
             </div>
 
             <button type="submit" className="btn-submit" disabled={loading} style={{ marginTop: 8 }}>
@@ -264,7 +265,7 @@ export default function RegisterPage() {
                   </svg>
                   Inscription en cours...
                 </span>
-              ) : "S'inscrire 🤟"}
+              ) : "S'inscrire"}
             </button>
           </form>
 

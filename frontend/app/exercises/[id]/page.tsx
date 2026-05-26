@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Sidebar from '../../../components/Sidebar';
 import { api, auth, Exercise } from '../../../lib/api';
+import { Trophy, ThumbsUp, Dumbbell, Check, X as XIcon, RefreshCw, Puzzle } from 'lucide-react';
 
 export default function ExercisePage() {
   const { id } = useParams();
@@ -25,7 +26,7 @@ export default function ExercisePage() {
   if (loading) return (
     <div className="dash-layout"><Sidebar />
       <main className="dash-content" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ fontSize: 48 }}>🧩</div>
+        <Puzzle size={48} color="#9CA3AF" />
       </main>
     </div>
   );
@@ -65,8 +66,8 @@ export default function ExercisePage() {
         <Sidebar />
         <main className="dash-content" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div className="animate-up" style={{ textAlign: 'center', maxWidth: 480 }}>
-            <div style={{ fontSize: 80, marginBottom: 24 }}>
-              {percent >= 80 ? '🎉' : percent >= 50 ? '👍' : '💪'}
+            <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'center' }}>
+              {percent >= 80 ? <Trophy size={80} color="var(--forest)" /> : percent >= 50 ? <ThumbsUp size={80} color="var(--ocre)" /> : <Dumbbell size={80} color="var(--terra)" />}
             </div>
             <h2 style={{ fontSize: 32, marginBottom: 12 }}>Exercice terminé !</h2>
             <p style={{ color: 'var(--gray)', marginBottom: 32 }}>Voici tes résultats pour «&nbsp;{exercise.title}&nbsp;»</p>
@@ -99,7 +100,7 @@ export default function ExercisePage() {
                     marginBottom: 8,
                   }}>
                     <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
-                      {correct ? '✅' : '❌'} Q{i + 1}. {q.text}
+                      {correct ? <Check size={13} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: 4 }} /> : <XIcon size={13} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: 4 }} />} Q{i + 1}. {q.text}
                     </div>
                     {!correct && (
                       <div style={{ fontSize: 12, color: 'var(--gray)' }}>
@@ -113,7 +114,7 @@ export default function ExercisePage() {
 
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
               <button className="btn btn-ghost" onClick={() => { setCurrentQ(0); setAnswers({}); setSubmitted(false); setSelected(null); }}>
-                🔄 Réessayer
+                <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><RefreshCw size={16} /> Réessayer</span>
               </button>
               {exercise.lesson_id && (
                 <Link href={`/lessons/${exercise.lesson_id}`} className="btn btn-primary">
@@ -131,7 +132,7 @@ export default function ExercisePage() {
     <div className="dash-layout"><Sidebar />
       <main className="dash-content">
         <div style={{ textAlign: 'center', padding: 60 }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>🧩</div>
+          <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}><Puzzle size={48} color="#9CA3AF" /></div>
           <p style={{ color: 'var(--gray)' }}>Cet exercice n'a pas encore de questions.</p>
           <Link href="/lessons" className="btn btn-primary" style={{ marginTop: 20 }}>← Retour aux leçons</Link>
         </div>
@@ -146,7 +147,7 @@ export default function ExercisePage() {
         {/* Header */}
         <div className="animate-up" style={{ marginBottom: 32 }}>
           <div style={{ color: 'var(--gray)', fontSize: 14, marginBottom: 8 }}>
-            🧩 {exercise.title}
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Puzzle size={14} /> {exercise.title}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <h1 style={{ fontSize: 28 }}>Question {currentQ + 1}/{questions.length}</h1>
@@ -207,7 +208,7 @@ export default function ExercisePage() {
               disabled={!selected}
               style={{ opacity: selected ? 1 : 0.5, padding: '12px 28px', fontSize: 16 }}
             >
-              {isLast ? 'Terminer ✓' : 'Suivant →'}
+              {isLast ? <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>Terminer <Check size={16} /></span> : 'Suivant →'}
             </button>
           </div>
         </div>

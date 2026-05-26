@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Sidebar from '../../components/Sidebar';
 import { api, auth, Lesson } from '../../lib/api';
 import { useRouter } from 'next/navigation';
+import { BookOpen, Search, Sprout, Zap, Flame, Hand, Puzzle } from 'lucide-react';
 
 export default function LessonsPage() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function LessonsPage() {
       <Sidebar />
       <main className="dash-content">
         <div className="dash-header animate-up">
-          <h1 style={{ fontSize: 32 }}>📚 Leçons</h1>
+          <h1 style={{ fontSize: 32, display: 'flex', alignItems: 'center', gap: 10 }}><BookOpen size={28} /> Leçons</h1>
           <p style={{ color: 'var(--gray)', marginTop: 4 }}>
             {lessons.length} leçon{lessons.length > 1 ? 's' : ''} disponible{lessons.length > 1 ? 's' : ''}
           </p>
@@ -43,21 +44,22 @@ export default function LessonsPage() {
         <div className="filter-bar animate-up delay-1">
           {[
             { key: 'all', label: 'Toutes' },
-            { key: 'beginner', label: '🌱 Débutant' },
-            { key: 'intermediate', label: '⚡ Intermédiaire' },
-            { key: 'advanced', label: '🔥 Avancé' },
+            { key: 'beginner', label: 'Débutant', Icon: Sprout },
+            { key: 'intermediate', label: 'Intermédiaire', Icon: Zap },
+            { key: 'advanced', label: 'Avancé', Icon: Flame },
           ].map(f => (
-            <button key={f.key} className={`filter-btn ${filter === f.key ? 'active' : ''}`} onClick={() => setFilter(f.key)}>
+            <button key={f.key} className={`filter-btn ${filter === f.key ? 'active' : ''}`} onClick={() => setFilter(f.key)} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              {f.Icon && <f.Icon size={14} />}
               {f.label}
             </button>
           ))}
         </div>
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: 80, fontSize: 40 }}>📚</div>
+          <div style={{ textAlign: 'center', padding: 80 }}><BookOpen size={40} color="#9CA3AF" /></div>
         ) : filtered.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px', color: 'var(--gray)', background: 'var(--white)', borderRadius: 'var(--radius-lg)' }}>
-            <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
+            <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}><Search size={48} color="#9CA3AF" /></div>
             <p>Aucune leçon trouvée pour ce niveau.</p>
           </div>
         ) : (
@@ -76,8 +78,8 @@ export default function LessonsPage() {
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', gap: 12, fontSize: 13, color: 'var(--gray)' }}>
-                    {lesson.signs && <span>🤟 {lesson.signs.length} signes</span>}
-                    {lesson.exercises && <span>🧩 {lesson.exercises.length} exercices</span>}
+                    {lesson.signs && <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Hand size={13} /> {lesson.signs.length} signes</span>}
+                    {lesson.exercises && <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Puzzle size={13} /> {lesson.exercises.length} exercices</span>}
                   </div>
                   <span style={{ color: 'var(--ocre)', fontWeight: 600, fontSize: 13 }}>Voir →</span>
                 </div>

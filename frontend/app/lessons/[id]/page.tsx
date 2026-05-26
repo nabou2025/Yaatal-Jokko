@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Sidebar from '../../../components/Sidebar';
 import { api, auth, Lesson } from '../../../lib/api';
+import { BookOpen, Hand, Puzzle } from 'lucide-react';
 
 export default function LessonDetailPage() {
   const { id } = useParams();
@@ -23,7 +24,7 @@ export default function LessonDetailPage() {
     <div className="dash-layout">
       <Sidebar />
       <main className="dash-content" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ fontSize: 48 }}>📚</div>
+        <BookOpen size={48} color="#9CA3AF" />
       </main>
     </div>
   );
@@ -67,16 +68,16 @@ export default function LessonDetailPage() {
             {lesson.description || 'Découvrez les signes et exercices de cette leçon.'}
           </p>
           <div style={{ display: 'flex', gap: 24, marginTop: 24, fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>
-            <span>🤟 {lesson.signs?.length || 0} signes</span>
-            <span>🧩 {lesson.exercises?.length || 0} exercices</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Hand size={14} /> {lesson.signs?.length || 0} signes</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Puzzle size={14} /> {lesson.exercises?.length || 0} exercices</span>
           </div>
         </div>
 
         {/* Tabs */}
         <div className="animate-up delay-1" style={{ display: 'flex', gap: 4, marginBottom: 24, background: 'var(--white)', padding: 4, borderRadius: 12, width: 'fit-content', boxShadow: 'var(--shadow)' }}>
           {[
-            { key: 'signs', label: '🤟 Signes' },
-            { key: 'exercises', label: '🧩 Exercices' },
+            { key: 'signs', label: 'Signes', Icon: Hand },
+            { key: 'exercises', label: 'Exercices', Icon: Puzzle },
           ].map(t => (
             <button
               key={t.key}
@@ -88,7 +89,7 @@ export default function LessonDetailPage() {
                 transition: 'all 0.2s', cursor: 'pointer',
               }}
             >
-              {t.label}
+              <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><t.Icon size={14} /> {t.label}</span>
             </button>
           ))}
         </div>
@@ -98,7 +99,7 @@ export default function LessonDetailPage() {
           <div className="animate-in">
             {!lesson.signs || lesson.signs.length === 0 ? (
               <div style={{ textAlign: 'center', padding: 60, color: 'var(--gray)', background: 'var(--white)', borderRadius: 'var(--radius-lg)' }}>
-                <div style={{ fontSize: 48, marginBottom: 16 }}>🤟</div>
+                <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}><Hand size={48} color="#9CA3AF" /></div>
                 <p>Aucun signe associé à cette leçon.</p>
               </div>
             ) : (
@@ -111,7 +112,7 @@ export default function LessonDetailPage() {
                       ) : sign.video_url ? (
                         <video src={sign.video_url} controls style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
-                        <span style={{ fontSize: 52 }}>🤟</span>
+                        <Hand size={52} color="#9CA3AF" />
                       )}
                     </div>
                     <div className="sign-info">
@@ -135,7 +136,7 @@ export default function LessonDetailPage() {
           <div className="animate-in">
             {!lesson.exercises || lesson.exercises.length === 0 ? (
               <div style={{ textAlign: 'center', padding: 60, color: 'var(--gray)', background: 'var(--white)', borderRadius: 'var(--radius-lg)' }}>
-                <div style={{ fontSize: 48, marginBottom: 16 }}>🧩</div>
+                <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}><Puzzle size={48} color="#9CA3AF" /></div>
                 <p>Aucun exercice disponible pour cette leçon.</p>
               </div>
             ) : (

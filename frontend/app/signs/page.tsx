@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '../../components/Sidebar';
 import { api, auth, Sign } from '../../lib/api';
+import { Hand, Type, MessageCircle, FileText, Search, X } from 'lucide-react';
 
 export default function SignsPage() {
   const router = useRouter();
@@ -25,14 +26,20 @@ export default function SignsPage() {
     return matchCat && matchSearch;
   });
 
-  const catEmoji = (cat: string) => ({ alphabet: '🔤', word: '💬', phrase: '📝' }[cat] || '🤟');
+  const CatIcon = ({ cat, size }: { cat: string; size: number }) => {
+    const props = { size, color: '#2D3561' };
+    if (cat === 'alphabet') return <Type {...props} />;
+    if (cat === 'word') return <MessageCircle {...props} />;
+    if (cat === 'phrase') return <FileText {...props} />;
+    return <Hand {...props} />;
+  };
 
   return (
     <div className="dash-layout">
       <Sidebar />
       <main className="dash-content">
         <div className="dash-header animate-up">
-          <h1 style={{ fontSize: 32 }}>🤟 Bibliothèque des signes</h1>
+          <h1 style={{ fontSize: 32, display: 'flex', alignItems: 'center', gap: 10 }}><Hand size={28} color="#2D3561" /> Bibliothèque des signes</h1>
           <p style={{ color: 'var(--gray)', marginTop: 4 }}>{signs.length} signe{signs.length > 1 ? 's' : ''} disponible{signs.length > 1 ? 's' : ''}</p>
         </div>
 
@@ -40,19 +47,20 @@ export default function SignsPage() {
         <div className="animate-up delay-1" style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap', alignItems: 'center' }}>
           <input
             className="input-field"
-            placeholder="🔍 Rechercher un signe..."
+            placeholder="Rechercher un signe..."
             value={search}
             onChange={e => setSearch(e.target.value)}
             style={{ maxWidth: 280 }}
           />
           <div className="filter-bar" style={{ margin: 0 }}>
             {[
-              { key: 'all', label: 'Tous' },
-              { key: 'alphabet', label: '🔤 Alphabet' },
-              { key: 'word', label: '💬 Mots' },
-              { key: 'phrase', label: '📝 Phrases' },
+              { key: 'all', label: 'Tous', Icon: null },
+              { key: 'alphabet', label: 'Alphabet', Icon: Type },
+              { key: 'word', label: 'Mots', Icon: MessageCircle },
+              { key: 'phrase', label: 'Phrases', Icon: FileText },
             ].map(f => (
-              <button key={f.key} className={`filter-btn ${filter === f.key ? 'active' : ''}`} onClick={() => setFilter(f.key)}>
+              <button key={f.key} className={`filter-btn ${filter === f.key ? 'active' : ''}`} onClick={() => setFilter(f.key)} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                {f.Icon && <f.Icon size={14} />}
                 {f.label}
               </button>
             ))}
@@ -60,10 +68,10 @@ export default function SignsPage() {
         </div>
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: 80, fontSize: 40 }}>🤟</div>
+          <div style={{ textAlign: 'center', padding: 80 }}><Hand size={40} color="#E8A898" /></div>
         ) : filtered.length === 0 ? (
           <div style={{ textAlign: 'center', padding: 60, color: 'var(--gray)', background: 'var(--white)', borderRadius: 'var(--radius-lg)' }}>
-            <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
+            <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}><Search size={48} color="#9CA3AF" /></div>
             <p>Aucun signe trouvé.</p>
           </div>
         ) : (
@@ -79,7 +87,7 @@ export default function SignsPage() {
                   {sign.image_url ? (
                     <img src={sign.image_url} alt={sign.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
-                    <span style={{ fontSize: 52 }}>{catEmoji(sign.category)}</span>
+                    <CatIcon cat={sign.category} size={52} />
                   )}
                 </div>
                 <div className="sign-info">
@@ -106,7 +114,7 @@ export default function SignsPage() {
                   </span>
                   <h2 className="modal-title" style={{ margin: 0 }}>{selected.title}</h2>
                 </div>
-                <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--gray)' }}>✕</button>
+                <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray)', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
               </div>
 
               {/* Media */}
@@ -116,7 +124,7 @@ export default function SignsPage() {
                 ) : selected.image_url ? (
                   <img src={selected.image_url} alt={selected.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
-                  <span style={{ fontSize: 80 }}>{catEmoji(selected.category)}</span>
+                  <CatIcon cat={selected.category} size={80} />
                 )}
               </div>
 

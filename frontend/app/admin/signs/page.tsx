@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '../../../components/Sidebar';
 import { api, auth, Sign } from '../../../lib/api';
+import { ImageIcon, Plus, Check, Pencil, Trash2 } from 'lucide-react';
 
 const EMPTY: Partial<Sign> = { title: '', description: '', category: 'alphabet', video_url: '', image_url: '' };
 
@@ -71,16 +72,16 @@ export default function AdminSignsPage() {
       <main className="dash-content">
         <div className="dash-header animate-up" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <h1 style={{ fontSize: 32 }}>🖼️ Gestion des signes</h1>
+            <h1 style={{ fontSize: 32, display: 'flex', alignItems: 'center', gap: 10 }}><ImageIcon size={28} /> Gestion des signes</h1>
             <p style={{ color: 'var(--gray)', marginTop: 4 }}>{signs.length} signe{signs.length > 1 ? 's' : ''}</p>
           </div>
-          <button className="btn btn-primary" onClick={openCreate}>➕ Nouveau signe</button>
+          <button className="btn btn-primary" onClick={openCreate} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Plus size={16} /> Nouveau signe</button>
         </div>
 
         {success && <div className="alert alert-success animate-in">{success}</div>}
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: 80, fontSize: 40 }}>🖼️</div>
+          <div style={{ textAlign: 'center', padding: 80 }}><ImageIcon size={40} color="#9CA3AF" /></div>
         ) : (
           <div className="animate-up delay-1" style={{ overflowX: 'auto' }}>
             <table className="data-table">
@@ -108,12 +109,12 @@ export default function AdminSignsPage() {
                       {s.description || '—'}
                     </td>
                     <td style={{ color: s.video_url ? 'var(--forest)' : 'var(--gray-light)' }}>
-                      {s.video_url ? '✅' : '—'}
+                      {s.video_url ? <Check size={16} color="var(--forest)" /> : '—'}
                     </td>
                     <td>
                       <div style={{ display: 'flex', gap: 8 }}>
-                        <button className="btn btn-ghost" style={{ padding: '6px 12px', fontSize: 13 }} onClick={() => openEdit(s)}>✏️ Modifier</button>
-                        <button className="btn btn-danger" style={{ padding: '6px 12px', fontSize: 13 }} onClick={() => remove(s.id)}>🗑️</button>
+                        <button className="btn btn-ghost" style={{ padding: '6px 12px', fontSize: 13, display: 'flex', alignItems: 'center', gap: 4 }} onClick={() => openEdit(s)}><Pencil size={13} /> Modifier</button>
+                        <button className="btn btn-danger" style={{ padding: '6px 12px', fontSize: 13, display: 'flex', alignItems: 'center' }} onClick={() => remove(s.id)}><Trash2 size={13} /></button>
                       </div>
                     </td>
                   </tr>
@@ -127,7 +128,7 @@ export default function AdminSignsPage() {
         {modal && (
           <div className="modal-overlay" onClick={() => setModal(null)}>
             <div className="modal-box" onClick={e => e.stopPropagation()}>
-              <h2 className="modal-title">{modal === 'create' ? '➕ Nouveau signe' : '✏️ Modifier le signe'}</h2>
+              <h2 className="modal-title" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>{modal === 'create' ? <><Plus size={18} /> Nouveau signe</> : <><Pencil size={18} /> Modifier le signe</>}</h2>
               {error && <div className="alert alert-error">{error}</div>}
 
               <div className="form-group">
@@ -158,7 +159,7 @@ export default function AdminSignsPage() {
               <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 8 }}>
                 <button className="btn btn-ghost" onClick={() => setModal(null)}>Annuler</button>
                 <button className="btn btn-primary" onClick={save} disabled={saving}>
-                  {saving ? 'Enregistrement...' : '✅ Enregistrer'}
+                  {saving ? 'Enregistrement...' : <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Check size={16} /> Enregistrer</span>}
                 </button>
               </div>
             </div>
