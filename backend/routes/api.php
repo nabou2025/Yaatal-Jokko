@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NiveauController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\LeconController;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\QuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,9 @@ Route::get('/themes',                    [ThemeController::class, 'index']);
 Route::get('/themes/niveau/{niveau_id}', [ThemeController::class, 'byNiveau']);
 Route::get('/lecons',                    [LeconController::class, 'index']);
 Route::get('/lecons/theme/{theme_id}',   [LeconController::class, 'byTheme']);
+Route::get('/quiz',                      [QuizController::class, 'index']);
+Route::get('/quiz/theme/{theme_id}',     [QuizController::class, 'byTheme']);
+Route::get('/quiz/{id}',                 [QuizController::class, 'show']);
 
 // ✅ Routes protégées — nécessitent un token Sanctum valide
 Route::middleware('auth:sanctum')->group(function () {
@@ -47,5 +52,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/lecons',           [LeconController::class, 'store']);
     Route::put('/lecons/{lecon}',    [LeconController::class, 'update']);
     Route::delete('/lecons/{lecon}', [LeconController::class, 'destroy']);
+
+    // Quiz — admin uniquement
+    Route::post('/quiz',           [QuizController::class, 'store']);
+    Route::put('/quiz/{quiz}',     [QuizController::class, 'update']);
+    Route::delete('/quiz/{quiz}',  [QuizController::class, 'destroy']);
+
+    // Correction quiz — apprenant
+    Route::post('/quiz/{id}/corriger', [QuizController::class, 'corriger']);
+
+    // Questions
+Route::post('/quiz/{quiz_id}/questions',          [QuestionController::class, 'store']);
+Route::put('/questions/{question}',               [QuestionController::class, 'update']);
+Route::delete('/questions/{question}',            [QuestionController::class, 'destroy']);
+
+// Réponses
+Route::post('/questions/{question_id}/reponses',  [QuestionController::class, 'addReponse']);
 
 });
