@@ -44,10 +44,10 @@ export default function LoginPage() {
     if (token) {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       if (user.role === 'admin') {
-        router.push('/admin/dashboard');
-      } else {
-        router.push('/dashboard');
-      }
+  router.push('/admin');
+} else {
+  router.push('/dashboard');
+}
     }
   }, [router]);
 
