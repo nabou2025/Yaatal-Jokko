@@ -38,35 +38,38 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/auth/profile',  [AuthController::class, 'updateProfile']);
     Route::post('/auth/logout',  [AuthController::class, 'logout']);
 
-    // Niveaux — admin uniquement
-    Route::post('/niveaux',            [NiveauController::class, 'store']);
-    Route::put('/niveaux/{niveau}',    [NiveauController::class, 'update']);
-    Route::delete('/niveaux/{niveau}', [NiveauController::class, 'destroy']);
-
-    // Thèmes — admin uniquement
-    Route::post('/themes',           [ThemeController::class, 'store']);
-    Route::put('/themes/{theme}',    [ThemeController::class, 'update']);
-    Route::delete('/themes/{theme}', [ThemeController::class, 'destroy']);
-
-    // Leçons — admin uniquement
-    Route::post('/lecons',           [LeconController::class, 'store']);
-    Route::put('/lecons/{lecon}',    [LeconController::class, 'update']);
-    Route::delete('/lecons/{lecon}', [LeconController::class, 'destroy']);
-
-    // Quiz — admin uniquement
-    Route::post('/quiz',           [QuizController::class, 'store']);
-    Route::put('/quiz/{quiz}',     [QuizController::class, 'update']);
-    Route::delete('/quiz/{quiz}',  [QuizController::class, 'destroy']);
-
     // Correction quiz — apprenant
     Route::post('/quiz/{id}/corriger', [QuizController::class, 'corriger']);
 
-    // Questions
-Route::post('/quiz/{quiz_id}/questions',          [QuestionController::class, 'store']);
-Route::put('/questions/{question}',               [QuestionController::class, 'update']);
-Route::delete('/questions/{question}',            [QuestionController::class, 'destroy']);
+    // ─── Routes admin uniquement ───────────────────────────
+    Route::middleware('admin')->group(function () {
 
-// Réponses
-Route::post('/questions/{question_id}/reponses',  [QuestionController::class, 'addReponse']);
+        // Niveaux
+        Route::post('/niveaux',            [NiveauController::class, 'store']);
+        Route::put('/niveaux/{niveau}',    [NiveauController::class, 'update']);
+        Route::delete('/niveaux/{niveau}', [NiveauController::class, 'destroy']);
 
+        // Thèmes
+        Route::post('/themes',           [ThemeController::class, 'store']);
+        Route::put('/themes/{theme}',    [ThemeController::class, 'update']);
+        Route::delete('/themes/{theme}', [ThemeController::class, 'destroy']);
+
+        // Leçons
+        Route::post('/lecons',           [LeconController::class, 'store']);
+        Route::put('/lecons/{lecon}',    [LeconController::class, 'update']);
+        Route::delete('/lecons/{lecon}', [LeconController::class, 'destroy']);
+
+        // Quiz
+        Route::post('/quiz',           [QuizController::class, 'store']);
+        Route::put('/quiz/{quiz}',     [QuizController::class, 'update']);
+        Route::delete('/quiz/{quiz}',  [QuizController::class, 'destroy']);
+
+        // Questions
+        Route::post('/quiz/{quiz_id}/questions',         [QuestionController::class, 'store']);
+        Route::put('/questions/{question}',              [QuestionController::class, 'update']);
+        Route::delete('/questions/{question}',           [QuestionController::class, 'destroy']);
+
+        // Réponses
+        Route::post('/questions/{question_id}/reponses', [QuestionController::class, 'addReponse']);
+    });
 });
