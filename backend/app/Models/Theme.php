@@ -26,6 +26,13 @@ class Theme extends Model
 
     public function quiz()
     {
+        // Compatibilité : un thème peut avoir un quiz principal
         return $this->hasOne(Quiz::class);
+    }
+
+    public function quizzes()
+    {
+        // YAATAL JOKKO : un thème peut désormais avoir plusieurs quiz
+        return $this->hasMany(Quiz::class);
     }
 }
