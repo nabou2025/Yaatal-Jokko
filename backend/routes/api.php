@@ -7,6 +7,7 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\LeconController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ProgressionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,7 +69,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/quiz/{quiz_id}/questions',         [QuestionController::class, 'store']);
         Route::put('/questions/{question}',              [QuestionController::class, 'update']);
         Route::delete('/questions/{question}',           [QuestionController::class, 'destroy']);
-
+        // Progression
+Route::get('/progression/{userId}', [ProgressionController::class, 'show']);
         // Réponses
         Route::post('/questions/{question_id}/reponses', [QuestionController::class, 'addReponse']);
     });
