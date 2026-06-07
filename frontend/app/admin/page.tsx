@@ -77,7 +77,7 @@ export default function AdminDashboard() {
   const menuItems = [
     { label: "Niveaux", count: stats.niveaux, path: "/admin/niveaux", icon: "📚", desc: "Gérer les niveaux" },
     { label: "Thèmes", count: stats.themes, path: "/admin/themes", icon: "🎯", desc: "Gérer les thèmes" },
-    { label: "Leçons", count: stats.lecons, path: "/admin/lecons", icon: "📖", desc: "Gérer les leçons" },
+    { label: "Leçons", count: stats.lecons, path: "/admin/lessons", icon: "📖", desc: "Gérer les leçons" },
     { label: "Quiz", count: stats.quiz, path: "/admin/quiz", icon: "🧩", desc: "Gérer les quiz" },
   ];
 
@@ -147,7 +147,7 @@ export default function AdminDashboard() {
           {[
             { label: "Ajouter une leçon", path: "/admin/lecons/new", color: "#2D3561" },
             { label: "Ajouter un quiz", path: "/admin/quiz/new", color: "#E8A898" },
-            { label: "Ajouter un thème", path: "/admin/themes/new", color: "#2D3561" },
+            { label: "Ajouter un thème", path: "/admin/lessons", color: "#2D3561" },
           ].map((action) => (
             <button
               key={action.label}
