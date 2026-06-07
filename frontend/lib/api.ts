@@ -2,7 +2,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 function getToken(): string | null {
   if (typeof window === 'undefined') return null;
-  return localStorage.getItem('yaatal_token');
+  return localStorage.getItem('token');
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -15,7 +15,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   if (token) headers['Authorization'] = `Bearer ${token}`;
   const res = await fetch(`${BASE_URL}${path}`, { ...options, headers });
   if (res.status === 401) {
-    localStorage.removeItem('yaatal_token');
+    localStorage.removeItem('token');
     window.location.href = '/login';
   }
   const data = await res.json();
@@ -37,8 +37,8 @@ export const auth = {
     api.post<{ token: string; user: User }>('/auth/register', { name, email, password, password_confirmation, role }),
   logout: () => api.post('/auth/logout', {}),
   me: () => api.get<{ user: User }>('/user'),
-  saveToken: (token: string) => localStorage.setItem('yaatal_token', token),
-  clearToken: () => localStorage.removeItem('yaatal_token'),
+  saveToken: (token: string) => localStorage.setItem('token', token),
+  clearToken: () => localStorage.removeItem('token'),
   isLoggedIn: () => !!getToken(),
 };
 

@@ -33,7 +33,7 @@ export default function Sidebar() {
     { href: '/admin/exercises', icon: '🧩', label: 'Gérer exercices' },
   ];
 
-  const isAdmin = user?.role === 'teacher';
+  const isAdmin = user?.role === 'admin';
 
   return (
     <aside className="sidebar">
