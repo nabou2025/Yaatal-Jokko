@@ -14,7 +14,8 @@ export default function LessonsPage() {
 
   useEffect(() => {
     if (!auth.isLoggedIn()) { router.push('/login'); return; }
-    api.get<Lesson[]>('/lessons')
+    api.get<{ lecons: Lesson[] }>('/lecons')
+      .then(data => setLessons((data as any).lecons ?? []))
       .then(data => setLessons(Array.isArray(data) ? data : []))
       .finally(() => setLoading(false));
   }, [router]);

@@ -46,7 +46,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  role: 'learner' | 'teacher' | 'parent';
+  role: 'learner' | 'teacher' | 'parent' | 'admin';
 }
 
 export interface Sign {

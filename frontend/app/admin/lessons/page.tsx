@@ -24,10 +24,10 @@ export default function AdminLessonsPage() {
   }, [router]);
 
   const load = () => {
-    api.get<Lesson[]>('/lessons')
-      .then(data => setLessons(Array.isArray(data) ? data : []))
-      .finally(() => setLoading(false));
-  };
+  api.get<{ lecons: Lesson[] }>('/lecons')
+    .then(data => setLessons(Array.isArray(data) ? data : (data as any).lecons ?? []))
+    .finally(() => setLoading(false));
+};
 
   const handle = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -39,10 +39,10 @@ export default function AdminLessonsPage() {
     setError(''); setSaving(true);
     try {
       if (modal === 'create') {
-        await api.post('/lessons', form);
+        await api.post('/lecons', form);
         setSuccess('Leçon créée !');
       } else {
-        await api.put(`/lessons/${form.id}`, form);
+        await api.put(`/lecons/${form.id}`, form);
         setSuccess('Leçon mise à jour !');
       }
       setModal(null);
@@ -58,7 +58,7 @@ export default function AdminLessonsPage() {
   const remove = async (id: number) => {
     if (!confirm('Supprimer cette leçon ?')) return;
     try {
-      await api.delete(`/lessons/${id}`);
+      await api.delete(`/lecons/${id}`);
       setLessons(prev => prev.filter(l => l.id !== id));
       setSuccess('Leçon supprimée.');
       setTimeout(() => setSuccess(''), 3000);
