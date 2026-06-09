@@ -1,4 +1,5 @@
 'use client';
+import '../admin.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -17,10 +18,12 @@ export default function AdminLessonsPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [themes, setThemes] = useState<{id: number, nom: string}[]>([]);
 
   useEffect(() => {
     if (!auth.isLoggedIn()) { router.push('/login'); return; }
     load();
+    api.get<any>('/themes').then(data => setThemes(data.themes ?? []));
   }, [router]);
 
   const load = () => {
@@ -143,6 +146,15 @@ export default function AdminLessonsPage() {
                   <option value="intermediate">Intermédiaire</option>
                   <option value="advanced">Avancé</option>
                 </select>
+              </div>
+              <div className="form-group">
+                 <label className="label">Thème *</label>
+                    <select className="input-field" name="theme_id" value={(form as any).theme_id || ''} onChange={handle}>
+                      <option value="">-- Choisir un thème --</option>
+                          {themes.map(t => (
+                      <option key={t.id} value={t.id}>{t.nom}</option>
+                               ))}
+                    </select>
               </div>
               <div className="form-group">
                 <label className="label">Description</label>
