@@ -137,7 +137,7 @@ export default function AdminLessonsPage() {
 
               <div className="form-group">
                 <label className="label">Titre *</label>
-                <input className="input-field" name="title" value={form.title || ''} onChange={handle} placeholder="Ex: L'alphabet en langue des signes" />
+                <input className="input-field" name="titre" value={form.titre || ''} onChange={handle} placeholder="Ex: L'alphabet en langue des signes" />
               </div>
               <div className="form-group">
                 <label className="label">Niveau *</label>
