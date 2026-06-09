@@ -10,3 +10,20 @@ body {
   color: var(--foreground);
   font-family: Arial, sans-serif;
 }
+.dash-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.dash-content {
+  margin-left: 240px;
+  padding: 32px;
+  flex: 1;
+  width: calc(100% - 240px);
+}
+:root {
+  --background: #F9E8E4;
+  --foreground: #2D3561;
+  --color-title: #2D3561;
+  --color-accent: #E8A898;
+}

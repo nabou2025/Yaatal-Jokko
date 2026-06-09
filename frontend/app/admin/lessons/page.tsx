@@ -1,4 +1,5 @@
 'use client';
+import '../admin.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -17,17 +18,19 @@ export default function AdminLessonsPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [themes, setThemes] = useState<{id: number, nom: string}[]>([]);
 
   useEffect(() => {
     if (!auth.isLoggedIn()) { router.push('/login'); return; }
     load();
+    api.get<any>('/themes').then(data => setThemes(data.themes ?? []));
   }, [router]);
 
   const load = () => {
-    api.get<Lesson[]>('/lessons')
-      .then(data => setLessons(Array.isArray(data) ? data : []))
-      .finally(() => setLoading(false));
-  };
+  api.get<{ lecons: Lesson[] }>('/lecons')
+    .then(data => setLessons(Array.isArray(data) ? data : (data as any).lecons ?? []))
+    .finally(() => setLoading(false));
+};
 
   const handle = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -39,10 +42,10 @@ export default function AdminLessonsPage() {
     setError(''); setSaving(true);
     try {
       if (modal === 'create') {
-        await api.post('/lessons', form);
+        await api.post('/lecons', form);
         setSuccess('Leçon créée !');
       } else {
-        await api.put(`/lessons/${form.id}`, form);
+        await api.put(`/lecons/${form.id}`, form);
         setSuccess('Leçon mise à jour !');
       }
       setModal(null);
@@ -58,7 +61,7 @@ export default function AdminLessonsPage() {
   const remove = async (id: number) => {
     if (!confirm('Supprimer cette leçon ?')) return;
     try {
-      await api.delete(`/lessons/${id}`);
+      await api.delete(`/lecons/${id}`);
       setLessons(prev => prev.filter(l => l.id !== id));
       setSuccess('Leçon supprimée.');
       setTimeout(() => setSuccess(''), 3000);
@@ -134,7 +137,7 @@ export default function AdminLessonsPage() {
 
               <div className="form-group">
                 <label className="label">Titre *</label>
-                <input className="input-field" name="title" value={form.title || ''} onChange={handle} placeholder="Ex: L'alphabet en langue des signes" />
+                <input className="input-field" name="titre" value={form.titre || ''} onChange={handle} placeholder="Ex: L'alphabet en langue des signes" />
               </div>
               <div className="form-group">
                 <label className="label">Niveau *</label>
@@ -143,6 +146,15 @@ export default function AdminLessonsPage() {
                   <option value="intermediate">Intermédiaire</option>
                   <option value="advanced">Avancé</option>
                 </select>
+              </div>
+              <div className="form-group">
+                 <label className="label">Thème *</label>
+                    <select className="input-field" name="theme_id" value={(form as any).theme_id || ''} onChange={handle}>
+                      <option value="">-- Choisir un thème --</option>
+                          {themes.map(t => (
+                      <option key={t.id} value={t.id}>{t.nom}</option>
+                               ))}
+                    </select>
               </div>
               <div className="form-group">
                 <label className="label">Description</label>
