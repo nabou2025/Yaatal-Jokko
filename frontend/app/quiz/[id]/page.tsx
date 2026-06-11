@@ -9,12 +9,12 @@ interface Reponse {
   id: number;
   question_id: number;
   texte: string;
-  // est_correcte n'est PAS exposé en mode joueur — le backend filtre
 }
 
 interface Question {
   id: number;
   enonce: string;
+  image?: string;
   ordre: number;
   reponses: Reponse[];
 }
@@ -74,7 +74,7 @@ export default function QuizDetailPage() {
   };
 
   const selectAnswer = (questionId: number, reponseId: number) => {
-    if (result) return; // verrouillé après soumission
+    if (result) return;
     setAnswers(prev => ({ ...prev, [questionId]: reponseId }));
   };
 
@@ -147,6 +147,7 @@ export default function QuizDetailPage() {
 
   return (
     <div className="min-h-screen pb-28" style={{ backgroundColor: '#F9E8E4' }}>
+
       {/* Header */}
       <div className="px-6 pt-10 pb-4">
         <button
@@ -218,9 +219,22 @@ export default function QuizDetailPage() {
                 <p className="text-xs font-bold mb-2" style={{ color: '#E8A898' }}>
                   Question {index + 1} / {quiz.questions.length}
                 </p>
-                <p className="text-sm font-bold mb-4" style={{ color: '#2D3561' }}>
+                <p className="text-sm font-bold mb-3" style={{ color: '#2D3561' }}>
                   {question.enonce}
                 </p>
+
+                {/* Image de la question */}
+                {question.image && (
+                  <div className="mb-4 rounded-xl overflow-hidden">
+                    <img
+                      src={question.image}
+                      alt="Signe de la question"
+                      className="w-full object-cover rounded-xl"
+                      style={{ maxHeight: '200px' }}
+                    />
+                  </div>
+                )}
+
                 <div className="space-y-2">
                   {question.reponses.map(rep => {
                     const isSelected = answers[question.id] === rep.id;
@@ -235,14 +249,14 @@ export default function QuizDetailPage() {
                       color = '#FFFFFF';
                     }
                     if (isCorrect) {
-                      bg = '#2D3561';
-                      color = '#FFFFFF';
-                      border = '2px solid #1f7a3a';
+                      bg = '#E8F5E9';
+                      border = '1.5px solid #2E7D32';
+                      color = '#2E7D32';
                     }
                     if (isWrongSelected) {
-                      bg = '#fff0f0';
-                      color = '#cc3333';
-                      border = '2px solid #e85555';
+                      bg = '#FFEBEE';
+                      border = '1.5px solid #C62828';
+                      color = '#C62828';
                     }
 
                     return (
@@ -265,8 +279,8 @@ export default function QuizDetailPage() {
           })}
       </div>
 
-      {/* Actions */}
-      <div className="px-6 mt-6 space-y-3">
+      {/* Boutons action */}
+      <div className="px-6 mt-6">
         {!result ? (
           <button
             onClick={submit}
@@ -291,7 +305,7 @@ export default function QuizDetailPage() {
             </button>
             <button
               onClick={() => router.push('/quiz')}
-              className="w-full py-3 rounded-2xl font-bold text-sm shadow-sm bg-white"
+              className="w-full py-3 rounded-2xl font-bold text-sm shadow-sm bg-white mt-3"
               style={{ color: '#2D3561', border: '1.5px solid #E8A898' }}
             >
               Retour aux quiz
