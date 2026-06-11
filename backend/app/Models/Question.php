@@ -11,7 +11,8 @@ class Question extends Model
      * Une question appartient à un quiz et propose plusieurs réponses.
      */
     protected $fillable = [
-        'enonce',
+	'enonce',
+	'image', 
         'quiz_id',
         'ordre',
     ];

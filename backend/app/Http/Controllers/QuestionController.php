@@ -12,27 +12,29 @@ class QuestionController extends Controller
      * YAATAL JOKKO — Ajouter une question à un quiz
      * POST /api/quiz/{quiz_id}/questions
      */
-    public function store(Request $request, $quiz_id)
-    {
-        $request->validate([
-            'enonce' => 'required|string',
-            'ordre'  => 'nullable|integer',
-        ], [
-            'enonce.required' => 'Yaatal Jokko : l\'énoncé est obligatoire.',
-        ]);
+   public function store(Request $request, $quiz_id)
+{
+    $request->validate([
+        'enonce' => 'required|string',
+        'image'  => 'nullable|string', // ← ajoute cette ligne
+        'ordre'  => 'nullable|integer',
+    ], [
+        'enonce.required' => 'Yaatal Jokko : l\'énoncé est obligatoire.',
+    ]);
 
-        $question = Question::create([
-            'enonce'  => $request->enonce,
-            'quiz_id' => $quiz_id,
-            'ordre'   => $request->ordre ?? 1,
-        ]);
+    $question = Question::create([
+        'enonce'  => $request->enonce,
+        'image'   => $request->image,  // ← ajoute cette ligne
+        'quiz_id' => $quiz_id,
+        'ordre'   => $request->ordre ?? 1,
+    ]);
 
-        return response()->json([
-            'app'      => 'Yaatal Jokko',
-            'message'  => 'Question ajoutée avec succès.',
-            'question' => $question,
-        ], 201);
-    }
+    return response()->json([
+        'app'      => 'Yaatal Jokko',
+        'message'  => 'Question ajoutée avec succès.',
+        'question' => $question,
+    ], 201);
+}
 
     /**
      * YAATAL JOKKO — Modifier une question
