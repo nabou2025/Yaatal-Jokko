@@ -145,9 +145,10 @@ export default function AdminDashboard() {
         </h2>
         <div className="space-y-3">
           {[
-            { label: "Ajouter une leçon", path: "/admin/lecons/new", color: "#2D3561" },
-            { label: "Ajouter un quiz", path: "/admin/quiz/new", color: "#E8A898" },
-            { label: "Ajouter un thème", path: "/admin/lessons", color: "#2D3561" },
+            { label: "Ajouter une leçon", path: "/admin/lessons", color: "#2D3561" },
+            { label: "Ajouter un quiz", path: "/admin/quiz", color: "#E8A898" },
+            { label: "Ajouter un thème", path: "/admin/themes", color: "#2D3561" },
+            { label: "Ajouter un niveau", path: "/admin/niveaux", color: "#E8A898" },
           ].map((action) => (
             <button
               key={action.label}
