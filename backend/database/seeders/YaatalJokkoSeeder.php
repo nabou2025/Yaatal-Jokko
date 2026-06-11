@@ -46,19 +46,19 @@ class YaatalJokkoSeeder extends Seeder
             [
                 'titre'       => 'La lettre A',
                 'description' => 'Apprenez a signer la lettre A',
-                'video'       => 'https://www.youtube.com/embed/cgae3B7n-co',
+                'video'       => 'https://www.youtube.com/embed/QF-qooXEY_o',
                 'ordre'       => 1,
             ],
             [
                 'titre'       => 'La lettre B',
                 'description' => 'Apprenez a signer la lettre B',
-                'video'       => 'https://www.youtube.com/embed/cgae3B7n-co',
+                'video'       => 'https://www.youtube.com/embed/QF-qooXEY_o',
                 'ordre'       => 2,
             ],
             [
                 'titre'       => 'La lettre C',
                 'description' => 'Apprenez a signer la lettre C',
-                'video'       => 'https://www.youtube.com/embed/cgae3B7n-co',
+                'video'       => 'https://www.youtube.com/embed/QF-qooXEY_o',
                 'ordre'       => 3,
             ],
         ];
@@ -75,19 +75,19 @@ class YaatalJokkoSeeder extends Seeder
             [
                 'titre'       => 'La mere',
                 'description' => 'Apprenez a signer le mot mere',
-                'video'       => 'https://www.youtube.com/embed/SRjPJHD7ANA',
+                'video'       => 'https://www.youtube.com/embed/eRhamkIGQq0',
                 'ordre'       => 1,
             ],
             [
                 'titre'       => 'Le pere',
                 'description' => 'Apprenez a signer le mot pere',
-                'video'       => 'https://www.youtube.com/embed/SRjPJHD7ANA',
+                'video'       => 'https://www.youtube.com/embed/eRhamkIGQq0',
                 'ordre'       => 2,
             ],
             [
                 'titre'       => 'Le frere',
                 'description' => 'Apprenez a signer le mot frere',
-                'video'       => 'https://www.youtube.com/embed/SRjPJHD7ANA',
+                'video'       => 'https://www.youtube.com/embed/eRhamkIGQq0',
                 'ordre'       => 3,
             ],
         ];
@@ -104,13 +104,13 @@ class YaatalJokkoSeeder extends Seeder
             [
                 'titre'       => 'Le pain',
                 'description' => 'Apprenez a signer le mot pain',
-                'video'       => 'https://www.youtube.com/embed/9IMWwkhv610',
+                'video'       => 'https://www.youtube.com/embed/A4frFOr1xiM',
                 'ordre'       => 1,
             ],
             [
                 'titre'       => 'L eau',
                 'description' => 'Apprenez a signer le mot eau',
-                'video'       => 'https://www.youtube.com/embed/9IMWwkhv610',
+                'video'       => 'https://www.youtube.com/embed/A4frFOr1xiM',
                 'ordre'       => 2,
             ],
         ];
