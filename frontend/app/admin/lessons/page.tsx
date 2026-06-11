@@ -116,7 +116,7 @@ export default function AdminLessonsPage() {
                     <td style={{ fontFamily: 'Space Mono, monospace', color: 'var(--gray)' }}>{l.exercises?.length ?? '—'}</td>
                     <td>
                       <div style={{ display: 'flex', gap: 8 }}>
-                        <Link href={`/lessons/${l.id}`} className="btn btn-ghost" style={{ padding: '6px 12px', fontSize: 13, display: 'flex', alignItems: 'center', gap: 4 }}><Eye size={13} /> Voir</Link>
+                        <Link href={`/lecons/${l.id}`} className="btn btn-ghost" style={{ padding: '6px 12px', fontSize: 13, display: 'flex', alignItems: 'center', gap: 4 }}><Eye size={13} /> Voir</Link>
                         <button className="btn btn-ghost" style={{ padding: '6px 12px', fontSize: 13, display: 'flex', alignItems: 'center', gap: 4 }} onClick={() => openEdit(l)}><Pencil size={13} /> Modifier</button>
                         <button className="btn btn-danger" style={{ padding: '6px 12px', fontSize: 13, display: 'flex', alignItems: 'center' }} onClick={() => remove(l.id)}><Trash2 size={13} /></button>
                       </div>
