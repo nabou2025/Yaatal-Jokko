@@ -15,7 +15,8 @@ export default function LessonDetailPage() {
 
   useEffect(() => {
     if (!auth.isLoggedIn()) { router.push('/login'); return; }
-    api.get<Lesson>(`/lessons/${id}`)
+    api.get<any>(`/lecons/${id}`)
+      .then(data => setLesson(data.lecon ?? data))
       .then(setLesson)
       .finally(() => setLoading(false));
   }, [id, router]);

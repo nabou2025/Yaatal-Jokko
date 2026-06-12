@@ -31,6 +31,9 @@ export default function Sidebar() {
     { href: '/admin/lessons', icon: '📝', label: 'Gérer leçons' },
     { href: '/admin/signs', icon: '🖼️', label: 'Gérer signes' },
     { href: '/admin/exercises', icon: '🧩', label: 'Gérer exercices' },
+    { href: '/admin/quiz', icon: '🧩', label: 'Gérer quiz' },
+    { href: '/admin/themes', icon: '🎯', label: 'Gérer thèmes' },
+    { href: '/admin/niveaux', icon: '📚', label: 'Gérer niveaux' },
   ];
 
   const isAdmin = user?.role === 'admin';
