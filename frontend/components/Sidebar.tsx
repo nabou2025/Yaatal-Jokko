@@ -30,7 +30,6 @@ export default function Sidebar() {
   const adminLinks = [
     { href: '/admin/lessons', icon: '📝', label: 'Gérer leçons' },
     { href: '/admin/signs', icon: '🖼️', label: 'Gérer signes' },
-    { href: '/admin/exercises', icon: '🧩', label: 'Gérer exercices' },
     { href: '/admin/quiz', icon: '🧩', label: 'Gérer quiz' },
     { href: '/admin/themes', icon: '🎯', label: 'Gérer thèmes' },
     { href: '/admin/niveaux', icon: '📚', label: 'Gérer niveaux' },
@@ -55,7 +54,7 @@ export default function Sidebar() {
     }}>
 
       {/* Logo */}
-      <Link href="/" style={{
+      <Link href={isAdmin ? "/admin" : "/"} style={{
         fontSize: 20,
         fontWeight: 800,
         color: 'white',
