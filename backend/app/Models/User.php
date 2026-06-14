@@ -30,4 +30,24 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    /**
+     * Relation avec les leçons complétées (Table pivot user_lecon)
+     */
+    public function lecons()
+    {
+        return $this->belongsToMany(Lecon::class, 'user_lecon')
+                    ->withPivot('termine')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Relation avec les quiz complétés (Table pivot user_quiz)
+     */
+    public function quizzes()
+    {
+        return $this->belongsToMany(Quiz::class, 'user_quiz')
+                    ->withPivot('termine')
+                    ->withTimestamps();
+    }
 }

@@ -31,6 +31,11 @@ Route::get('/quiz',                      [QuizController::class, 'index']);
 Route::get('/quiz/theme/{theme_id}',     [QuizController::class, 'byTheme']);
 Route::get('/quiz/{id}',                 [QuizController::class, 'show']);
 
+// ✅ Routes de progression (Accessibles pour le calcul et la sauvegarde)
+Route::post('/progression/sauvegarder', [ProgressionController::class, 'sauvegarderProgression']);
+Route::post('/progression/lecon',       [ProgressionController::class, 'sauvegarderLeconProgression']);
+Route::get('/progression/{userId}',     [ProgressionController::class, 'show']);
+
 // ✅ Routes protégées — nécessitent un token Sanctum valide
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -69,8 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/quiz/{quiz_id}/questions',         [QuestionController::class, 'store']);
         Route::put('/questions/{question}',              [QuestionController::class, 'update']);
         Route::delete('/questions/{question}',           [QuestionController::class, 'destroy']);
-        // Progression
-Route::get('/progression/{userId}', [ProgressionController::class, 'show']);
+
         // Réponses
         Route::post('/questions/{question_id}/reponses', [QuestionController::class, 'addReponse']);
     });

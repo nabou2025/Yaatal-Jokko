@@ -78,7 +78,7 @@ export default function QuizDetailPage() {
     setAnswers(prev => ({ ...prev, [questionId]: reponseId }));
   };
 
-  const submit = async () => {
+ const submit = async () => {
     if (!quiz) return;
     const token = localStorage.getItem('token');
     if (!token) {
@@ -103,7 +103,41 @@ export default function QuizDetailPage() {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (res.ok) setResult(data.resultat || data);
+      
+      if (res.ok) {
+        const correctionResult = data.resultat || data;
+        setResult(correctionResult);
+
+        // ─── CODE AJOUTÉ POUR ENREGISTRER LA PROGRESSION ───
+        // Si le quiz est réussi (ou si tu veux sauvegarder peu importe le score, tu peux enlever la condition result.reussi)
+        if (correctionResult.reussi) {
+          try {
+            // Récupération de l'utilisateur connecté pour avoir son ID
+            const userString = localStorage.getItem('user');
+            const user = userString ? JSON.parse(userString) : null;
+
+            if (user && user.id) {
+              await fetch(`${API_URL}/api/progression/sauvegarder`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Accept: 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                  user_id: user.id,
+                  quiz_id: quiz.id,
+                  lecon_id: null // On est sur un quiz ici
+                }),
+              });
+              console.log("Progression mise à jour avec succès côté Backend !");
+            }
+          } catch (progErr) {
+            console.error("Erreur lors de l'envoi de la progression :", progErr);
+          }
+        }
+        // ───────────────────────────────────────────────────
+      }
     } catch (err) {
       console.error('Erreur correction :', err);
     } finally {
