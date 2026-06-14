@@ -6,6 +6,14 @@ import { useRouter } from "next/navigation";
 export default function ProfilPage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
+  const [progression, setProgression] = useState<any>({
+    lecons_terminees: 0,
+    total_lecons: 8,
+    quizzes_termines: 0,
+    total_quizzes: 1,
+    progression_globale: 0
+  });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -13,7 +21,34 @@ export default function ProfilPage() {
       router.push("/login");
       return;
     }
-    setUser(JSON.parse(userData));
+    const currentUser = JSON.parse(userData);
+    setUser(currentUser);
+
+    // Récupérer la progression depuis Laravel
+    const fetchProgression = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+        
+        const res = await fetch(`${API_URL}/api/progression/${currentUser.id}`, {
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          setProgression(data);
+        }
+      } catch (err) {
+        console.error("Erreur récupération progression:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProgression();
   }, [router]);
 
   const handleLogout = () => {
@@ -34,50 +69,47 @@ export default function ProfilPage() {
           <div>
             <h1 className="text-xl font-bold text-white">{user?.name}</h1>
             <p className="text-sm" style={{ color: "#E8A898" }}>{user?.email}</p>
-            <span className="text-xs text-white bg-white/20 px-2 py-1 rounded-full mt-1 inline-block">
-              {user?.role}
-            </span>
           </div>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="px-6 py-4 bg-white mx-4 rounded-2xl shadow-sm -mt-4">
-        <div className="grid grid-cols-3 gap-4 text-center">
-          <div>
-            <p className="text-2xl font-bold" style={{ color: "#2D3561" }}>0%</p>
-            <p className="text-xs text-gray-400">Progression</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold" style={{ color: "#2D3561" }}>0</p>
-            <p className="text-xs text-gray-400">Leçons</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold" style={{ color: "#2D3561" }}>0</p>
-            <p className="text-xs text-gray-400">Quiz réussis</p>
-          </div>
+      {/* Barre de progression globale */}
+      <div className="mx-6 -mt-4 bg-white rounded-2xl p-4 shadow-sm">
+        <div className="flex justify-between items-center mb-2">
+          <p className="text-sm font-semibold" style={{ color: "#2D3561" }}>Progression Globale</p>
+          <p className="text-sm font-bold" style={{ color: "#E8A898" }}>{progression.progression_globale}%</p>
+        </div>
+        <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div className="h-full transition-all duration-500"
+            style={{ 
+              backgroundColor: "#E8A898", 
+              width: `${progression.progression_globale}%` 
+            }}></div>
         </div>
       </div>
 
-      {/* Infos */}
+      {/* Statistiques Dynamiques */}
       <div className="px-6 mt-6">
-        <h2 className="text-base font-bold mb-4" style={{ color: "#2D3561" }}>
-          Informations personnelles
-        </h2>
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+        <h2 className="text-md font-bold mb-3" style={{ color: "#2D3561" }}>Mes Statistiques</h2>
+        <div className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
           {[
-            { label: "Nom", value: user?.name },
-            { label: "Email", value: user?.email },
-            { label: "Rôle", value: user?.role },
-          ].map((item, i) => (
-            <div key={i} className="px-4 py-3 border-b last:border-0"
+            { 
+              label: "Leçons terminées", 
+              value: `${progression.lecons_terminees}/${progression.total_lecons || 8}` 
+            },
+            { 
+              label: "Quiz réussis", 
+              value: `${progression.quizzes_termines}/${progression.total_quizzes || 1}` 
+            },
+            { 
+              label: "Niveau actuel", 
+              value: progression.quizzes_termines > 0 ? "Intermédiaire" : "Débutant" 
+            },
+          ].map((item, index) => (
+            <div key={index} className="flex justify-between items-center py-2 border-b last:border-0"
               style={{ borderColor: "#F9E8E4" }}>
-              <p className="text-xs font-medium mb-1" style={{ color: "#E8A898" }}>
-                {item.label}
-              </p>
-              <p className="text-sm font-medium" style={{ color: "#2D3561" }}>
-                {item.value}
-              </p>
+              <p className="text-sm text-gray-500">{item.label}</p>
+              <p className="text-sm font-medium" style={{ color: "#2D3561" }}>{item.value}</p>
             </div>
           ))}
         </div>
@@ -105,8 +137,8 @@ export default function ProfilPage() {
             <button key={item.label}
               onClick={() => router.push(item.path)}
               className="flex flex-col items-center gap-1">
-              <span className="text-xs font-medium"
-                style={{ color: item.active ? "#2D3561" : "#9CA3AF" }}>
+              <span className={`text-xs font-medium ${item.active ? "font-bold" : ""}`}
+                style={{ color: item.active ? "#2D3561" : "#A0AEC0" }}>
                 {item.label}
               </span>
             </button>
