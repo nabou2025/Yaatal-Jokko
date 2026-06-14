@@ -20,9 +20,10 @@ export default function Sidebar() {
   };
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+  const isAdmin = user?.role === 'admin';
 
   const links = [
-    { href: '/dashboard', icon: '🏠', label: 'Tableau de bord' },
+    { href: isAdmin ? '/admin' : '/dashboard', icon: '🏠', label: 'Tableau de bord' },
     { href: '/lessons', icon: '📚', label: 'Leçons' },
     { href: '/signs', icon: '🤟', label: 'Bibliothèque signes' },
   ];
@@ -34,8 +35,6 @@ export default function Sidebar() {
     { href: '/admin/themes', icon: '🎯', label: 'Gérer thèmes' },
     { href: '/admin/niveaux', icon: '📚', label: 'Gérer niveaux' },
   ];
-
-  const isAdmin = user?.role === 'admin';
 
   return (
     <aside style={{
@@ -54,7 +53,7 @@ export default function Sidebar() {
     }}>
 
       {/* Logo */}
-      <Link href={isAdmin ? "/admin" : "/"} style={{
+      <Link href="/" style={{
         fontSize: 20,
         fontWeight: 800,
         color: 'white',
